@@ -1,1 +1,1 @@
-include countries_validation_data/*\.json
+include i18naddress/data/*

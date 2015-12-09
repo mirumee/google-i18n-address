@@ -4,7 +4,7 @@ import os
 import re
 
 COUNTRIES_VALIDATION_DATA_DIR = os.path.join(
-    os.path.dirname(__file__), '..', 'countries_validation_data')
+    os.path.dirname(__file__), 'data')
 
 
 class I18nCountryData(object):
