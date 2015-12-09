@@ -28,12 +28,13 @@ setup(
     author_email='hello@mirumee.com',
     description='Address validation helpers for Google\'s i18n address database',  # noqa
     license='BSD',
-    version='1.0.0',
+    version='1.0.1',
     url='https://github.com/mirumee/google-i18n-address',
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
         'requests>=2.7.0',
     ],
-    cmdclass={'update_validation_files': DownloadJSONFiles}
+    cmdclass={'update_validation_files': DownloadJSONFiles},
+    zip_safe=False
 )
