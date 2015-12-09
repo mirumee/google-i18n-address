@@ -1,0 +1,1 @@
+{"BH": {"zipex": "317", "name": "BAHRAIN", "zip": "(?:(?:\\d|1[0-2])\\d{2})?", "fmt": "%N%n%O%n%A%n%C %Z", "key": "BH", "id": "data/BH"}}

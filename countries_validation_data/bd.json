@@ -1,0 +1,1 @@
+{"BD": {"zipex": "1340,1000", "posturl": "http://www.bangladeshpost.gov.bd/PostCode.asp", "zip": "\\d{4}", "fmt": "%N%n%O%n%A%n%C - %Z", "key": "BD", "id": "data/BD", "name": "BANGLADESH"}}

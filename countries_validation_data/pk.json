@@ -1,0 +1,1 @@
+{"PK": {"zipex": "44000", "posturl": "http://www.pakpost.gov.pk/postcode/postcode.html", "zip": "\\d{5}", "fmt": "%N%n%O%n%A%n%C-%Z", "key": "PK", "id": "data/PK", "name": "PAKISTAN"}}

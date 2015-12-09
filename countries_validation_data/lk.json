@@ -1,0 +1,1 @@
+{"LK": {"zipex": "20000,00100", "posturl": "http://www.slpost.gov.lk/", "zip": "\\d{5}", "fmt": "%N%n%O%n%A%n%C%n%Z", "key": "LK", "id": "data/LK", "name": "SRI LANKA"}}

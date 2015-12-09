@@ -1,0 +1,1 @@
+{"FO": {"postprefix": "FO", "zipex": "100", "name": "FAROE ISLANDS", "zip": "\\d{3}", "fmt": "%N%n%O%n%A%nFO%Z %C", "key": "FO", "posturl": "http://www.postur.fo/", "id": "data/FO"}}

@@ -1,0 +1,1 @@
+{"FI": {"postprefix": "FI-", "zipex": "00550,00011", "name": "FINLAND", "zip": "\\d{5}", "fmt": "%O%n%N%n%A%nFI-%Z %C", "id": "data/FI", "key": "FI", "posturl": "http://www.verkkoposti.com/e3/postinumeroluettelo", "require": "ACZ"}}

@@ -1,0 +1,1 @@
+{"GT": {"zipex": "09001,01501", "name": "GUATEMALA", "zip": "\\d{5}", "fmt": "%N%n%O%n%A%n%Z- %C", "key": "GT", "id": "data/GT"}}

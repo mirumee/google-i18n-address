@@ -1,0 +1,1 @@
+{"AZ": {"postprefix": "AZ ", "zipex": "1000", "name": "AZERBAIJAN", "zip": "\\d{4}", "fmt": "%N%n%O%n%A%nAZ %Z %C", "key": "AZ", "id": "data/AZ"}}

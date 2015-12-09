@@ -1,0 +1,1 @@
+{"SG": {"zipex": "546080,308125,408600", "name": "REP. OF SINGAPORE", "zip": "\\d{6}", "fmt": "%N%n%O%n%A%nSINGAPORE %Z", "id": "data/SG", "key": "SG", "posturl": "http://www.singpost.com.sg/quick_services/index.htm", "require": "AZ"}}

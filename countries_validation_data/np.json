@@ -1,0 +1,1 @@
+{"NP": {"zipex": "44601", "posturl": "http://www.gpo.gov.np/postalcode.aspx", "zip": "\\d{5}", "fmt": "%N%n%O%n%A%n%C %Z", "key": "NP", "id": "data/NP", "name": "NEPAL"}}

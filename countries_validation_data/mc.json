@@ -1,0 +1,1 @@
+{"MC": {"postprefix": "MC-", "zipex": "98000,98020,98011,98001", "name": "MONACO", "zip": "980\\d{2}", "fmt": "%N%n%O%n%A%nMC-%Z %C %X", "key": "MC", "id": "data/MC"}}

@@ -1,0 +1,1 @@
+{"CZ": {"zipex": "100 00,251 66,530 87,110 00,225 99", "posturl": "http://psc.ceskaposta.cz/CleanForm.action", "zip": "\\d{3}[ ]?\\d{2}", "fmt": "%N%n%O%n%A%n%Z %C", "key": "CZ", "id": "data/CZ", "name": "CZECH REP."}}

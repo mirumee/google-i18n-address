@@ -1,0 +1,1 @@
+{"SZ": {"upper": "ACZ", "zipex": "H100", "name": "SWAZILAND", "zip": "[HLMS]\\d{3}", "fmt": "%N%n%O%n%A%n%C%n%Z", "key": "SZ", "posturl": "http://www.sptc.co.sz/swazipost/codes.php", "id": "data/SZ"}}

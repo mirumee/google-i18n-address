@@ -1,0 +1,1 @@
+{"BY": {"zipex": "223016,225860,220050", "posturl": "http://zip.belpost.by", "zip": "\\d{6}", "fmt": "%S%n%Z %C %X%n%A%n%O%n%N", "key": "BY", "id": "data/BY", "name": "BELARUS"}}

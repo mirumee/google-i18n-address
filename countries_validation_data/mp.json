@@ -1,0 +1,1 @@
+{"MP": {"upper": "ACNOS", "zipex": "96950,96951,96952", "name": "NORTHERN MARIANA ISLANDS", "zip": "(9695[012])(?:[ \\-](\\d{4}))?", "zip_name_type": "zip", "require": "ACSZ", "state_name_type": "state", "id": "data/MP", "key": "MP", "posturl": "http://zip4.usps.com/zip4/welcome.jsp", "fmt": "%N%n%O%n%A%n%C %S %Z"}}

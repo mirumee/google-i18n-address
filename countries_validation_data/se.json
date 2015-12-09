@@ -1,0 +1,1 @@
+{"SE": {"postprefix": "SE-", "zipex": "11455,12345,10500", "name": "SWEDEN", "zip": "\\d{3}[ ]?\\d{2}", "fmt": "%O%n%N%n%A%nSE-%Z %C", "id": "data/SE", "key": "SE", "posturl": "http://www.posten.se/sv/Kundservice/Sidor/Sok-postnummer-resultat.aspx", "require": "ACZ"}}

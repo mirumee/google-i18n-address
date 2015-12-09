@@ -1,0 +1,1 @@
+{"EC": {"upper": "CZ", "zipex": "090105,EC090112,H0103C,P0133B,P0133A,P0133V", "name": "ECUADOR", "zip": "(?:[A-Z]\\d{4}[A-Z]|(?:[A-Z]{2})?\\d{6})?", "fmt": "%N%n%O%n%A%n%Z%n%C", "key": "EC", "id": "data/EC"}}

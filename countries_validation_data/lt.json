@@ -1,0 +1,1 @@
+{"LT": {"postprefix": "LT-", "zipex": "04340,03500", "name": "LITHUANIA", "zip": "\\d{5}", "fmt": "%O%n%N%n%A%nLT-%Z %C", "key": "LT", "posturl": "http://www.post.lt/lt/?id=316", "id": "data/LT"}}

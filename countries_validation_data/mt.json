@@ -1,0 +1,1 @@
+{"MT": {"upper": "CZ", "zipex": "NXR 01,ZTN 05,GPO 01,BZN 1130,SPB 6031,VCT 1753", "name": "MALTA", "zip": "[A-Z]{3}[ ]?\\d{2,4}", "fmt": "%N%n%O%n%A%n%C %Z", "key": "MT", "posturl": "http://postcodes.maltapost.com/", "id": "data/MT"}}

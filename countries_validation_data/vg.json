@@ -1,0 +1,1 @@
+{"VG": {"zipex": "VG1110,VG1150,VG1160", "name": "VIRGIN ISLANDS (BRITISH)", "zip": "VG\\d{4}", "fmt": "%N%n%O%n%A%n%C%n%Z", "id": "data/VG", "key": "VG", "require": "A"}}

@@ -1,0 +1,1 @@
+{"LU": {"postprefix": "L-", "zipex": "4750,2998", "name": "LUXEMBOURG", "zip": "\\d{4}", "fmt": "%O%n%N%n%A%nL-%Z %C", "id": "data/LU", "key": "LU", "posturl": "http://www.pt.lu/portal/services_en_ligne/recherche_codes_postaux", "require": "ACZ"}}
