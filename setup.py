@@ -28,7 +28,7 @@ setup(
     author_email='hello@mirumee.com',
     description='Address validation helpers for Google\'s i18n address database',  # noqa
     license='BSD',
-    version='1.0.1',
+    version='1.0.2',
     url='https://github.com/mirumee/google-i18n-address',
     packages=find_packages(),
     include_package_data=True,
