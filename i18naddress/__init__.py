@@ -64,3 +64,60 @@ class I18nCountryData(object):
             validation_data['require'] = tuple(
                 require_mapping[l] for l in country_data['require'])
         return validation_data
+
+
+def validate_areas(country_code, country_area=None, city=None, city_area=None,
+                   postal_code=None, street_address=None):
+    validation_data = {
+        'country_area_keys': [], 'city_keys': [], 'city_area_keys': [],
+        'postal_code_regexp': None, 'postal_code_example': None,
+        'require': []}
+    errors = {}
+    try:
+        i18n_country_data = I18nCountryData(country_code)
+    except ValueError:
+        errors['country'] = 'invalid'
+    else:
+        validation_data.update(i18n_country_data.get_validation_dict(
+            country_code, sub_area_prefix='country_area'))
+
+        if validation_data['country_area_keys'] and country_area:
+            if country_area not in validation_data['country_area_keys']:
+                errors['country_area'] = 'invalid_choice'
+            else:
+                validation_data.update(i18n_country_data.get_validation_dict(
+                    country_code, country_area,
+                    sub_area_prefix='city'))
+
+        if validation_data['city_keys'] and city:
+            if city not in validation_data['city_keys']:
+                errors['city'] = 'invalid_choice'
+            else:
+                validation_data.update(i18n_country_data.get_validation_dict(
+                    country_code, country_area, city,
+                    sub_area_prefix='city_area'))
+
+        if validation_data['city_area_keys'] and city_area:
+            if city_area not in validation_data['city_area_keys']:
+                errors['city_area'] = 'invalid_choice'
+            else:
+                validation_data.update(i18n_country_data.get_validation_dict(
+                    country_code, country_area, city))
+
+        if validation_data['postal_code_regexp'] and postal_code:
+            if not validation_data['postal_code_regexp'].match(postal_code):
+                errors['postal_code'] = 'invalid'
+
+        required_fields = validation_data['require']
+        if not street_address and 'street_address' in required_fields:
+            errors['street_address'] = 'required'
+        if not city and 'city' in required_fields:
+            errors['city'] = 'required'
+        if not city_area and 'city_area' in required_fields:
+            errors['city_area'] = 'required'
+        if not country_area and 'country_area' in required_fields:
+            errors['country_area'] = 'required'
+        if not postal_code and 'postal_code' in required_fields:
+            errors['postal_code'] = 'required'
+
+    return errors, validation_data
