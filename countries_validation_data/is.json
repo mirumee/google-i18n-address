@@ -1,0 +1,1 @@
+{"IS": {"zipex": "320,121,220,110", "posturl": "http://www.postur.is/cgi-bin/hsrun.exe/Distributed/vefur/vefur.htx;start=HS_landakort_postnumer", "zip": "\\d{3}", "fmt": "%N%n%O%n%A%n%Z %C", "key": "IS", "id": "data/IS", "name": "ICELAND"}}

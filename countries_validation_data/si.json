@@ -1,0 +1,1 @@
+{"SI": {"postprefix": "SI-", "zipex": "4000,1001,2500", "name": "SLOVENIA", "zip": "\\d{4}", "fmt": "%N%n%O%n%A%nSI- %Z %C", "key": "SI", "id": "data/SI"}}

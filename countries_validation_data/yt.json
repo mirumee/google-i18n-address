@@ -1,0 +1,1 @@
+{"YT": {"upper": "ACX", "zipex": "97600", "name": "MAYOTTE", "zip": "976\\d{2}", "fmt": "%O%n%N%n%A%n%Z %C %X", "id": "data/YT", "key": "YT", "require": "ACZ"}}

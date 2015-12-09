@@ -1,0 +1,1 @@
+{"MQ": {"upper": "ACX", "zipex": "97220", "name": "MARTINIQUE", "zip": "9[78]2\\d{2}", "fmt": "%O%n%N%n%A%n%Z %C %X", "id": "data/MQ", "key": "MQ", "posturl": "http://www.laposte.fr/Particulier/Utiliser-nos-outils-pratiques/Outils-et-documents/Trouvez-un-code-postal", "require": "ACZ"}}

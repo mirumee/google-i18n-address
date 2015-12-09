@@ -1,0 +1,1 @@
+{"AS": {"upper": "ACNOS", "zipex": "96799", "name": "AMERICAN SAMOA", "zip": "(96799)(?:[ \\-](\\d{4}))?", "zip_name_type": "zip", "require": "ACSZ", "state_name_type": "state", "id": "data/AS", "key": "AS", "posturl": "http://zip4.usps.com/zip4/welcome.jsp", "fmt": "%N%n%O%n%A%n%C %S %Z"}}

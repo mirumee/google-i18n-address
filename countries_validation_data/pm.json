@@ -1,0 +1,1 @@
+{"PM": {"upper": "ACX", "zipex": "97500", "name": "ST. PIERRE AND MIQUELON", "zip": "9[78]5\\d{2}", "fmt": "%O%n%N%n%A%n%Z %C %X", "id": "data/PM", "key": "PM", "require": "ACZ"}}

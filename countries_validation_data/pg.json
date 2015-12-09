@@ -1,0 +1,1 @@
+{"PG": {"zipex": "111", "name": "PAPUA NEW GUINEA", "zip": "\\d{3}", "fmt": "%N%n%O%n%A%n%C %Z %S", "id": "data/PG", "key": "PG", "require": "ACS"}}

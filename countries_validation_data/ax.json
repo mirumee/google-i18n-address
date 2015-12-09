@@ -1,0 +1,1 @@
+{"AX": {"postprefix": "AX-", "zipex": "22150,22550,22240,22710,22270,22730,22430", "name": "FINLAND", "zip": "22\\d{3}", "fmt": "%O%n%N%n%A%nAX-%Z %C%nÅLAND", "id": "data/AX", "key": "AX", "posturl": "http://www.posten.ax/department.con?iPage=123", "require": "ACZ"}}

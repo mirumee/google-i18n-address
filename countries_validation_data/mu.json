@@ -1,0 +1,1 @@
+{"MU": {"upper": "CZ", "zipex": "42602", "name": "MAURITIUS", "zip": "(?:\\d{3}(?:\\d{2}|[A-Z]{2}\\d{3}))?", "fmt": "%N%n%O%n%A%n%Z%n%C", "key": "MU", "id": "data/MU"}}

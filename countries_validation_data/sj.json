@@ -1,0 +1,1 @@
+{"SJ": {"zipex": "9170", "name": "SVALBARD AND JAN MAYEN ISLANDS", "zip": "\\d{4}", "fmt": "%N%n%O%n%A%n%Z %C", "id": "data/SJ", "key": "SJ", "posturl": "http://epab.posten.no/", "require": "ACZ"}}

@@ -1,0 +1,1 @@
+{"JE": {"upper": "CZ", "zipex": "JE1 1AA,JE2 2BT", "name": "CHANNEL ISLANDS", "zip": "JE\\d[\\dA-Z]?[ ]?\\d[ABD-HJLN-UW-Z]{2}", "fmt": "%N%n%O%n%A%n%X%n%C%nJERSEY%n%Z", "id": "data/JE", "key": "JE", "posturl": "http://www.jerseypost.com/tools/postcode-address-finder/", "require": "ACZ"}}

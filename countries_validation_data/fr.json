@@ -1,0 +1,1 @@
+{"FR": {"upper": "CX", "zipex": "33380,34092,33506", "name": "FRANCE", "zip": "\\d{2}[ ]?\\d{3}", "fmt": "%O%n%N%n%A%n%Z %C %X", "id": "data/FR", "key": "FR", "posturl": "http://www.laposte.fr/Particulier/Utiliser-nos-outils-pratiques/Outils-et-documents/Trouvez-un-code-postal", "require": "ACZ"}}

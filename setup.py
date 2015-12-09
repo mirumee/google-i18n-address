@@ -1,0 +1,39 @@
+#! /usr/bin/env python
+import logging
+from setuptools import setup, find_packages, Command
+
+from i18naddress.downloader import download
+
+
+class DownloadJSONFiles(Command):
+
+    description = 'Download all addresses data from Google i18n API'
+    user_options = []
+    logger = None
+
+    def initialize_options(self):
+        logging.basicConfig()
+        self.logger = logging.getLogger('i18naddress.downloader')
+        self.logger.setLevel(logging.DEBUG)
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        download()
+
+setup(
+    name='google-i18n-address',
+    author='Mirumee Software',
+    author_email='hello@mirumee.com',
+    description='Address valdation helpers wrapped in Google i18n API.',
+    license='BSD',
+    version='1.0.0',
+    url='https://github.com/mirumee/google-i18n-address',
+    packages=find_packages(),
+    include_package_data=True,
+    install_requires=[
+        'requests>=2.7.0',
+    ],
+    cmdclass={'update_validation_files': DownloadJSONFiles}
+)

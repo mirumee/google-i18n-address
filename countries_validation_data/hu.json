@@ -1,0 +1,1 @@
+{"HU": {"upper": "ACNO", "zipex": "1037,2380,1540", "name": "HUNGARY (Rep.)", "zip": "\\d{4}", "fmt": "%N%n%O%n%C%n%A%n%Z", "id": "data/HU", "key": "HU", "posturl": "http://posta.hu/ugyfelszolgalat/iranyitoszam_kereso", "require": "ACZ"}}
