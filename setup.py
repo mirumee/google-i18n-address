@@ -2,8 +2,6 @@
 import logging
 from setuptools import setup, find_packages, Command
 
-from i18naddress.downloader import download
-
 
 class DownloadJSONFiles(Command):
 
@@ -20,6 +18,7 @@ class DownloadJSONFiles(Command):
         pass
 
     def run(self):
+        from i18naddress.downloader import download
         download()
 
 setup(
@@ -28,7 +27,7 @@ setup(
     author_email='hello@mirumee.com',
     description='Address validation helpers for Google\'s i18n address database',  # noqa
     license='BSD',
-    version='1.0.2',
+    version='1.0.3',
     url='https://github.com/mirumee/google-i18n-address',
     packages=find_packages(),
     include_package_data=True,
