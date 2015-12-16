@@ -63,12 +63,17 @@ def serialize(obj, path):
         return data_str
 
 
-def download(processes=16):
+def download(country=None, processes=16):
     if not os.path.exists(COUNTRIES_VALIDATION_DATA_DIR):
         os.mkdir(COUNTRIES_VALIDATION_DATA_DIR)
     data = manager.dict()
     countries = fetch(MAIN_URL)['countries'].split('~')
-    countries = ['PL']
+    if country:
+        country = country.upper()
+        if country not in countries:
+            raise ValueError(
+                    '%s is not supported country code' % country)
+        countries = [country]
     for country in countries:
         work_queue.put(country)
     workers = ThreadPool(processes, worker, initargs=(data,))

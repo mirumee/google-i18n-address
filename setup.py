@@ -6,7 +6,8 @@ from setuptools import setup, find_packages, Command
 class DownloadJSONFiles(Command):
 
     description = 'Download all addresses data from Google i18n API'
-    user_options = []
+    user_options = [('country=', 'c', 'Download data only for this country')]
+    country = None
     logger = None
 
     def initialize_options(self):
@@ -19,7 +20,7 @@ class DownloadJSONFiles(Command):
 
     def run(self):
         from i18naddress.downloader import download
-        download()
+        download(country=self.country)
 
 setup(
     name='google-i18n-address',
