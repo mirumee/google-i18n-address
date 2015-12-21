@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 import json
 import os
 import re
@@ -32,6 +32,9 @@ class I18nCountryData(object):
             raise ValueError(
                 '%s is not supported country code' % country_code)
 
+    def __iter__(self):
+        return iter(self._data.items())
+
     def __getitem__(self, item):
         if isinstance(item, tuple):
             item = '/'.join(item)
@@ -46,8 +49,8 @@ class I18nCountryData(object):
             'sub_lnames', country_data.get('sub_names', sub_area_keys))
         if sub_area_keys:
             sub_area_keys = sub_area_keys.split('~')
-            sub_area_choices = zip(
-                sub_area_keys, sub_area_names.split('~'))
+            sub_area_choices = list(zip(
+                sub_area_keys, sub_area_names.split('~')))
         else:
             sub_area_keys = []
             sub_area_choices = []
@@ -66,12 +69,17 @@ class I18nCountryData(object):
         return validation_data
 
 
+ValidationData = namedtuple('ValidationData', (
+    'require', 'country_area_keys', 'country_area_choices', 'city_keys', 'city_choices',
+    'city_area_keys', 'city_area_choices', 'postal_code_regexp', 'postal_code_example'))
+
+
 def validate_areas(country_code, country_area=None, city=None, city_area=None,
                    postal_code=None, street_address=None):
     validation_data = {
-        'country_area_keys': [], 'city_keys': [], 'city_area_keys': [],
-        'postal_code_regexp': None, 'postal_code_example': None,
-        'require': []}
+        'country_area_keys': None, 'country_area_choices': None, 'city_keys': None,
+        'city_choices': None, 'city_area_keys': None, 'city_area_choices': None,
+        'postal_code_regexp': None, 'postal_code_example': None, 'require': []}
     errors = {}
     try:
         i18n_country_data = I18nCountryData(country_code)
@@ -120,4 +128,4 @@ def validate_areas(country_code, country_area=None, city=None, city_area=None,
         if not postal_code and 'postal_code' in required_fields:
             errors['postal_code'] = 'required'
 
-    return errors, validation_data
+    return errors, ValidationData(**validation_data)
