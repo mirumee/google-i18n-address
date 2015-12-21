@@ -19,6 +19,7 @@ Method `validate_areas` returns two objects, first one is a dict with errors, se
 Address validation with only country code:
 
 ```python
+>>> from i18naddress import validate_areas
 >>> errors_dict, validation = validate_areas(country_code='US')
 >>> errors_dict
 {'city': 'required',
@@ -30,7 +31,7 @@ Address validation with only country code:
 With correct address:
 
 ```python
->>> from i18naddress import I18nCountryData
+>>> from i18naddress import validate_areas
 >>> errors_dict, validation = validate_areas(
     country_code='US',
     country_area="CA",
@@ -45,7 +46,7 @@ With correct address:
 Incorrect postal code for California state:
 
 ```python
->>> from i18naddress import I18nCountryData
+>>> from i18naddress import validate_areas
 >>> errors_dict, validation = validate_areas(
     country_code='US',
     country_area="CA",
@@ -65,6 +66,7 @@ Second returned value is `namedtuple` with keys: `require`, `country_area_keys`,
 `postal_code_example`.
 
 ```python
+>>> from i18naddress import validate_areas
 >>> errors_dict, validation = validate_areas(country_code='US')
 >>> validation
 ValidationData(
