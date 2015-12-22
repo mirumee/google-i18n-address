@@ -1,0 +1,4 @@
+[run]
+branch = True
+omit = */test_*.py
+source = i18naddress
