@@ -23,7 +23,7 @@ class I18nCountryData(object):
     def __init__(self, country_code='all'):
         try:
             country_code = country_code.lower()
-        except ArithmeticError:
+        except AttributeError:
             raise ValueError('Wrong country code.')
         try:
             self._data = defaultdict(dict, json.load(
