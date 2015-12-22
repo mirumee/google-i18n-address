@@ -1,4 +1,4 @@
-# Google i18n address
+# Google i18n address [![codecov.io](https://codecov.io/github/mirumee/google-i18n-address/coverage.svg?branch=master)](https://codecov.io/github/mirumee/google-i18n-address?branch=master) [![Circle CI](https://circleci.com/gh/mirumee/google-i18n-address/tree/master.svg?style=shield)](https://circleci.com/gh/mirumee/google-i18n-address/tree/master)
 
 This package contains a copy of [Google's i18n address](http://i18napis.appspot.com/address)
 metadata repository that contains great data but comes with no uptime guarantees.
