@@ -121,18 +121,19 @@ All raw data are stored in `I18nCountryData` dict like object:
 from collections import defaultdict
 
 from i18naddress import validate_areas
+from i18naddress.countries import COUNTRY_CHOICES
 from django import forms
 from django.utils.translation import ugettext as _
 
 
-class AddressForm(forms.ModelForm):
+class AddressForm(forms.Form):
 
     name = forms.CharField(required=True)
     company_name = forms.CharField(required=False)
     address = forms.CharField(required=False)
     city = forms.CharField(required=False)
     city_area = forms.CharField(required=False)
-    country = forms.CharField(required=True)
+    country = forms.ChoiceField(required=True, choices=COUNTRY_CHOICES)
     country_area = forms.CharField(required=False)
     postal_code = forms.CharField(required=False)
 
