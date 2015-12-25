@@ -188,4 +188,4 @@ class AddressForm(forms.ModelForm):
             self.add_error('postal_code', error)
 ```
 
-
+![Analytics](https://ga-beacon.appspot.com/UA-10159761-14/mirumee/google-i18n-address?pixel)
