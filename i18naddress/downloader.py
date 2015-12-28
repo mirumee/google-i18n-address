@@ -17,10 +17,14 @@ work_queue = JoinableQueue()
 manager = Manager()
 
 
-def fetch(url):
+def fetch(url): # pragma: no cover
     logger.debug(url)
     data = requests.get(url).json()
     return data
+
+
+def get_countries(): # pragma: no cover
+    return fetch(MAIN_URL)['countries'].split('~')
 
 
 def process(key):
@@ -40,7 +44,7 @@ def process(key):
     return data
 
 
-def worker(data):
+def worker(data):  # pragma: no cover
     while True:
         try:
             key = work_queue.get()
@@ -67,7 +71,7 @@ def download(country=None, processes=16):
     if not os.path.exists(COUNTRIES_VALIDATION_DATA_DIR):
         os.mkdir(COUNTRIES_VALIDATION_DATA_DIR)
     data = manager.dict()
-    countries = fetch(MAIN_URL)['countries'].split('~')
+    countries = get_countries()
     if country:
         country = country.upper()
         if country not in countries:
