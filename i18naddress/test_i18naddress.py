@@ -10,6 +10,7 @@ except ImportError:
     import mock
 
 from i18naddress import I18nCountryData, validate_areas
+from i18naddress.countries import COUNTRY_CHOICES
 
 PL_DATA = {
     'PL': {'name': 'POLAND', 'zip': '\d{2}-\d{3}', 'require': 'ACZ',
@@ -118,3 +119,9 @@ def test_validate_areas_errors(tmpdir, kwargs, errors):
     json.dump(US_DATA, data_dir.join('us.json').open('w'))
     with mock.patch.object(I18nCountryData, 'COUNTRY_VALIDATION_PATH', new=data_path):
         assert validate_areas(**kwargs)[0] == errors
+
+
+def test_countries():
+    countries_dict = dict(COUNTRY_CHOICES)
+    # by ISO 3166-1 it should be 249 countries, territories, or areas of geographical interest  # noqa
+    assert len(countries_dict) == 249
