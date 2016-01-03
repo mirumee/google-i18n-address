@@ -22,7 +22,7 @@ US_DATA = {
     'US': {'zip': '(\d{5})(?:[ \-](\d{4}))?', 'name': 'UNITED STATES'}
 }
 
-ALL_DATA = dict(PL_DATA.items() + US_DATA.items())
+ALL_DATA = dict(PL_DATA, **US_DATA)
 
 
 @pytest.mark.parametrize('i18n_key, data', [
