@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import io
 import json
 import logging
@@ -63,7 +64,7 @@ def worker(data):  # pragma: no cover
 def serialize(obj, path):
     with io.open(path, 'w', encoding='utf8') as output:
         data_str = json.dumps(dict(obj), ensure_ascii=False)
-        output.write(unicode(data_str))
+        output.write(data_str)
         return data_str
 
 
