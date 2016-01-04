@@ -109,8 +109,12 @@ def validate_areas(country_code, country_area=None, city=None, city_area=None,
             if city_area not in validation_data['city_area_keys']:
                 errors['city_area'] = 'invalid_choice'
             else:
-                validation_data.update(i18n_country_data.get_validation_dict(
-                    country_code, country_area, city))
+                city_area_data = i18n_country_data.get_validation_dict(
+                    country_code, country_area, city, city_area)
+                # city area has not sub areas, always empty lists
+                del city_area_data['sub_area_choices']
+                del city_area_data['sub_area_keys']
+                validation_data.update(city_area_data)
 
         if validation_data['postal_code_regexp'] and postal_code:
             if not validation_data['postal_code_regexp'].match(postal_code):
