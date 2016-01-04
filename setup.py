@@ -44,18 +44,31 @@ class DownloadJSONFiles(Command):
         from i18naddress.downloader import download
         download(country=self.country)
 
+
+def get_long_description():
+    with open('README.rst') as readme:
+        return readme.read()
+
 setup(
     name='google-i18n-address',
+    long_description=get_long_description(),
     author='Mirumee Software',
     author_email='hello@mirumee.com',
-    description='Address validation helpers for Google\'s i18n address database',  # noqa
+    description='Address validation helpers for Google\'s i18n address database',
     license='BSD',
     version='1.0.5',
     url='https://github.com/mirumee/google-i18n-address',
     packages=find_packages(),
     include_package_data=True,
     install_requires=['requests>=2.7.0'],
-    cmdclass={'update_validation_files': DownloadJSONFiles, 'test': PyTest},
     tests_require=['mock', 'pytest-mock', 'pytest-cov', 'pytest'],
-    zip_safe=False
+    cmdclass={'update_validation_files': DownloadJSONFiles, 'test': PyTest},
+    zip_safe=False,
+    classifiers=[
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Environment :: Web Environment',
+        'Topic :: Software Development :: Internationalization'
+    ]
 )
