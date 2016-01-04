@@ -65,7 +65,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=['requests>=2.7.0'],
-    tests_require=['mock', 'pytest-mock', 'pytest-cov', 'pytest'],
+    tests_require=['mock', 'pytest-cov', 'pytest'],
     cmdclass={'update_validation_files': DownloadJSONFiles, 'test': PyTest},
     zip_safe=False,
     classifiers=[
