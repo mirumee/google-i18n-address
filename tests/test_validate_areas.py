@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 import json
+import re
 import pytest
 
 try:
@@ -7,7 +8,7 @@ try:
 except ImportError:
     import mock
 
-from i18naddress import validate_areas
+from i18naddress import validate_areas, ValidationData
 
 PL_DATA = {
     'PL': {'name': 'POLAND', 'zip': '\d{2}-\d{3}', 'sub_keys': 'D', 'sub_names': 'Lower Silesian'},  # noqa
@@ -48,3 +49,14 @@ def save_test_data(tmpdir):
 ])
 def test_validate_areas_errors(kwargs, errors):
     assert validate_areas(**kwargs)[0] == errors
+
+
+def test_validation_data():
+    validation_data = validate_areas(
+        country_code='PL', country_area='D', city='WRO', city_area='AS')[1]
+    assert validation_data == ValidationData(
+        require=[], postal_code_regexp=re.compile('53-\\d{3}'), postal_code_example=None,
+        country_area_keys=['D'], country_area_choices=[('D', 'Lower Silesian')],
+        city_keys=['WRO'], city_choices=[('WRO', 'Wroclaw')],
+        city_area_keys=['AS', 'OS'], city_area_choices=[
+            ('AS', 'Altstadt'), ('OS', 'Oder Stadtteil')])
