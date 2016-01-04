@@ -1,7 +1,7 @@
 Google i18n address
 ===========================================================================================
 
-|codecov.io| |Circle CI| |PyPi downloads| |PyPi version| |PyPi pythons| |GitHub|
+|codecov.io| |Circle CI| |PyPi downloads| |PyPi version| |PyPi pythons|
 
 This package contains a copy of `Google's i18n
 address <http://i18napis.appspot.com/address>`_ metadata repository
@@ -205,7 +205,7 @@ Used with Django form
    :target: https://codecov.io/github/mirumee/google-i18n-address?branch=master
 .. |Circle CI| image:: https://img.shields.io/circleci/project/mirumee/google-i18n-address.svg
    :target: https://circleci.com/gh/mirumee/google-i18n-address/tree/master
-.. |PyPi downloads| image:: https://img.shields.io/pypi/dd/google-i18n-address.svg
+.. |PyPi downloads| image:: https://img.shields.io/pypi/dm/google-i18n-address.svg
    :target: https://pypi.python.org/pypi/google-i18n-address
 .. |PyPi pythons| image:: https://img.shields.io/pypi/pyversions/google-i18n-address.svg
    :target: https://pypi.python.org/pypi/google-i18n-address

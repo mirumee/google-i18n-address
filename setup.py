@@ -46,8 +46,12 @@ class DownloadJSONFiles(Command):
 
 
 def get_long_description():
-    with open('README.rst') as readme:
-        return readme.read()
+    with open('README.rst') as readme_file:
+        readme = readme_file.read()
+    # add GitHub badge in PyPi
+    return readme.replace(
+        '|codecov.io| |Circle CI| |PyPi downloads| |PyPi version| |PyPi pythons|',
+        '|codecov.io| |Circle CI| |PyPi downloads| |PyPi version| |PyPi pythons| |GitHub|') # noqa
 
 setup(
     name='google-i18n-address',
