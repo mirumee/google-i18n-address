@@ -50,8 +50,8 @@ def get_long_description():
         readme = readme_file.read()
     # add GitHub badge in PyPi
     return readme.replace(
-        '|codecov.io| |Circle CI| |PyPi downloads| |PyPi version| |PyPi pythons|',
-        '|codecov.io| |Circle CI| |PyPi downloads| |PyPi version| |PyPi pythons| |GitHub|') # noqa
+        '|codecov.io| |Circle CI| |PyPi downloads| |requires.io| |PyPi version| |PyPi pythons|', #  noqa
+        '|codecov.io| |Circle CI| |PyPi downloads| |requires.io| |PyPi version| |PyPi pythons| |GitHub|') #  noqa
 
 setup(
     name='google-i18n-address',
