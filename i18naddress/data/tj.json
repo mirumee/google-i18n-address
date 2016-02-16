@@ -1,1 +1,1 @@
-{"TJ": {"zipex": "735450,734025", "name": "TAJIKISTAN", "zip": "\\d{6}", "fmt": "%N%n%O%n%A%n%Z %C", "key": "TJ", "id": "data/TJ"}}
+{"TJ": {"fmt": "%N%n%O%n%A%n%Z %C", "id": "data/TJ", "key": "TJ", "name": "TAJIKISTAN", "zip": "\\d{6}", "zipex": "735450,734025"}}

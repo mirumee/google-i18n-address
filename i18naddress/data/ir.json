@@ -1,1 +1,1 @@
-{"IR": {"sublocality_name_type": "neighborhood", "zipex": "11936-12345", "name": "IRAN", "zip": "\\d{5}-?\\d{5}", "fmt": "%O%n%N%n%S%n%C, %D%n%A%n%Z", "key": "IR", "id": "data/IR"}}
+{"IR": {"fmt": "%O%n%N%n%S%n%C, %D%n%A%n%Z", "id": "data/IR", "key": "IR", "name": "IRAN", "sublocality_name_type": "neighborhood", "zip": "\\d{5}-?\\d{5}", "zipex": "11936-12345"}}

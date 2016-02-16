@@ -1,1 +1,1 @@
-{"SC": {"upper": "S", "name": "SEYCHELLES", "fmt": "%N%n%O%n%A%n%C%n%S", "state_name_type": "island", "key": "SC", "id": "data/SC"}}
+{"SC": {"fmt": "%N%n%O%n%A%n%C%n%S", "id": "data/SC", "key": "SC", "name": "SEYCHELLES", "state_name_type": "island", "upper": "S"}}

@@ -1,1 +1,1 @@
-{"VA": {"zipex": "00120", "name": "VATICAN", "zip": "00120", "fmt": "%N%n%O%n%A%n%Z %C", "key": "VA", "id": "data/VA"}}
+{"VA": {"fmt": "%N%n%O%n%A%n%Z %C", "id": "data/VA", "key": "VA", "name": "VATICAN", "zip": "00120", "zipex": "00120"}}
