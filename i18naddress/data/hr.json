@@ -1,1 +1,1 @@
-{"HR": {"postprefix": "HR-", "zipex": "10000,21001,10002", "name": "CROATIA", "zip": "\\d{5}", "fmt": "%N%n%O%n%A%nHR-%Z %C", "key": "HR", "posturl": "http://www.posta.hr/default.aspx?pretpum", "id": "data/HR"}}
+{"HR": {"fmt": "%N%n%O%n%A%nHR-%Z %C", "id": "data/HR", "key": "HR", "name": "CROATIA", "postprefix": "HR-", "posturl": "http://www.posta.hr/default.aspx?pretpum", "zip": "\\d{5}", "zipex": "10000,21001,10002"}}

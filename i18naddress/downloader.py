@@ -18,14 +18,14 @@ work_queue = JoinableQueue()
 manager = Manager()
 
 
-def fetch(url): # pragma: no cover
+def fetch(url):  # pragma: no cover
     logger.debug(url)
     data = requests.get(url).json()
     return data
 
 
-def get_countries(): # pragma: no cover
-    return fetch(MAIN_URL)['countries'].split('~')
+def get_countries():  # pragma: no cover
+    return fetch(MAIN_URL)['countries'].split('~') + ['ZZ']
 
 
 def process(key):
@@ -63,7 +63,7 @@ def worker(data):  # pragma: no cover
 
 def serialize(obj, path):
     with io.open(path, 'w', encoding='utf8') as output:
-        data_str = json.dumps(dict(obj), ensure_ascii=False)
+        data_str = json.dumps(dict(obj), ensure_ascii=False, sort_keys=True)
         output.write(data_str)
         return data_str
 
@@ -77,7 +77,7 @@ def download(country=None, processes=16):
         country = country.upper()
         if country not in countries:
             raise ValueError(
-                    '%s is not supported country code' % country)
+                '%s is not supported country code' % country)
         countries = [country]
     for country in countries:
         work_queue.put(country)
@@ -93,7 +93,8 @@ def download(country=None, processes=16):
                 if key[:2] == country:
                     country_dict[key] = address_data
             logger.debug('Saving %s', country)
-            country_json = serialize(country_dict, COUNTRY_PATH % country.lower())
+            country_json = serialize(
+                country_dict, COUNTRY_PATH % country.lower())
             all_output.write(country_json[1:-1])
             if country != countries[-1]:
                 all_output.write(u',')

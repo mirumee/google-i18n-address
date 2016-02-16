@@ -1,1 +1,1 @@
-{"HN": {"zipex": "31301", "name": "HONDURAS", "zip": "\\d{5}", "fmt": "%N%n%O%n%A%n%C, %S%n%Z", "id": "data/HN", "key": "HN", "require": "ACS"}}
+{"HN": {"fmt": "%N%n%O%n%A%n%C, %S%n%Z", "id": "data/HN", "key": "HN", "name": "HONDURAS", "require": "ACS", "zip": "\\d{5}", "zipex": "31301"}}

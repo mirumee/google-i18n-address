@@ -1,1 +1,1 @@
-{"TC": {"upper": "CZ", "zipex": "TKCA 1ZZ", "name": "TURKS AND CAICOS ISLANDS", "zip": "TKCA 1ZZ", "fmt": "%N%n%O%n%A%n%X%n%C%n%Z", "id": "data/TC", "key": "TC", "require": "ACZ"}}
+{"TC": {"fmt": "%N%n%O%n%A%n%X%n%C%n%Z", "id": "data/TC", "key": "TC", "name": "TURKS AND CAICOS ISLANDS", "require": "ACZ", "upper": "CZ", "zip": "TKCA 1ZZ", "zipex": "TKCA 1ZZ"}}

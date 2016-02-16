@@ -1,1 +1,1 @@
-{"PF": {"upper": "CS", "zipex": "98709", "name": "FRENCH POLYNESIA", "zip": "987\\d{2}", "fmt": "%N%n%O%n%A%n%Z %C %S", "state_name_type": "island", "id": "data/PF", "key": "PF", "require": "ACSZ"}}
+{"PF": {"fmt": "%N%n%O%n%A%n%Z %C %S", "id": "data/PF", "key": "PF", "name": "FRENCH POLYNESIA", "require": "ACSZ", "state_name_type": "island", "upper": "CS", "zip": "987\\d{2}", "zipex": "98709"}}
