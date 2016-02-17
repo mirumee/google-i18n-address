@@ -4,8 +4,6 @@ import pytest
 import re
 
 from i18naddress import I18nCountryData
-from i18naddress.countries import COUNTRY_CHOICES
-
 
 PL_DATA = {
     'PL': {'name': 'POLAND', 'zip': '\d{2}-\d{3}', 'require': 'ACZ',
@@ -74,9 +72,3 @@ def test_iterator():
 def test_get_validation_dict(validation_args, validation_data):
     i18n_data = I18nCountryData()
     assert i18n_data.get_validation_dict(*validation_args) == validation_data
-
-
-def test_countries():
-    countries_dict = dict(COUNTRY_CHOICES)
-    # by ISO 3166-1 it should be 249 countries, territories, or areas of geographical interest  # noqa
-    assert len(countries_dict) == 249
