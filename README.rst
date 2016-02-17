@@ -132,12 +132,15 @@ Used with Django form
     from collections import defaultdict
 
     from i18naddress import validate_areas
-    from i18naddress.countries import COUNTRY_CHOICES
     from django import forms
     from django.utils.translation import ugettext as _
 
 
     class AddressForm(forms.Form):
+
+        COUNTRY_CHOICES = [
+            ('CN', 'China'),
+            ('US', 'United States of America')]
 
         name = forms.CharField(required=True)
         company_name = forms.CharField(required=False)
