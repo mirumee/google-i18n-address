@@ -80,8 +80,8 @@ Second returned value is ``namedtuple`` with keys: ``require``,
     >>> validation
     ValidationData(
      require=('street_address', 'city', 'country_area', 'postal_code'),
-     country_area_keys=['AL', … 'WY'],
-     country_area_choices=[('AL', 'Alabama'), … ('WY', 'Wyoming')],
+     country_area_keys=['AL', ... 'WY'],
+     country_area_choices=[('AL', 'Alabama'), ... ('WY', 'Wyoming')],
      city_keys=None,
      city_choices=None,
      city_area_keys=None,
