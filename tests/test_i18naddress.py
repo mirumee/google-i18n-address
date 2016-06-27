@@ -63,10 +63,12 @@ def test_iterator():
 @pytest.mark.parametrize('validation_args, validation_data', [
     (('PL',), {'sub_area_keys': ['D', 'L'],
                'require': ('street_address', 'city', 'postal_code'),
-               'postal_code_regexp': re.compile(PL_DATA['PL']['zip']),
+               'postal_code_regexp': re.compile(
+                   PL_DATA['PL']['zip'], re.IGNORECASE),
                'sub_area_choices': [('D', 'Lower Silesian'), ('L', 'Lublin')]}),
     (('PL', 'D'), {'sub_area_keys': [], 'sub_area_choices': [],
-                   'postal_code_regexp': re.compile(PL_DATA['PL']['zip']),
+                   'postal_code_regexp': re.compile(
+                       PL_DATA['PL']['zip'], re.IGNORECASE),
                    'postal_code_example': '58-580',})
 ])
 def test_get_validation_dict(validation_args, validation_data):

@@ -55,7 +55,8 @@ def test_validation_data():
     validation_data = validate_areas(
         country_code='PL', country_area='D', city='WRO', city_area='AS')[1]
     assert validation_data == ValidationData(
-        require=[], postal_code_regexp=re.compile('53-\\d{3}'), postal_code_example=None,
+        require=[], postal_code_regexp=re.compile(
+            '53-\\d{3}', re.IGNORECASE), postal_code_example=None,
         country_area_keys=['D'], country_area_choices=[('D', 'Lower Silesian')],
         city_keys=['WRO'], city_choices=[('WRO', 'Wroclaw')],
         city_area_keys=['AS', 'OS'], city_area_choices=[
