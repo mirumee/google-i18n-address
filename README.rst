@@ -169,7 +169,7 @@ Used with Django form
                 country_code, country_area, city,
                 city_area, postal_code, street_address)
 
-            if 'country' in errors:
+            if 'country_code' in errors:
                 self.add_error('country', _(
                     '%s is not supported country code.' % country_code))
             if 'street_address' in errors:
