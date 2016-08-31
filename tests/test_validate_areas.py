@@ -30,7 +30,7 @@ def save_test_data(tmpdir):
 
 
 @pytest.mark.parametrize('kwargs, errors', [
-    ({'country_code': 'DE'}, {'country': 'invalid'}),
+    ({'country_code': 'DE'}, {'country_code': 'invalid'}),
     ({'country_code': 'AR'},
      {'country_area': 'required', 'city': 'required', 'city_area': 'required',
       'postal_code': 'required', 'street_address': 'required'}),

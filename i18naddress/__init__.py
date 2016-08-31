@@ -84,7 +84,7 @@ def validate_areas(country_code, country_area=None, city=None, city_area=None,
     try:
         i18n_country_data = I18nCountryData(country_code)
     except ValueError:
-        errors['country'] = 'invalid'
+        errors['country_code'] = 'invalid'
     else:
         validation_data.update(i18n_country_data.get_validation_dict(
             country_code, sub_area_prefix='country_area'))
