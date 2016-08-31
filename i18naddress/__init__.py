@@ -90,7 +90,8 @@ def validate_areas(country_code, country_area=None, city=None, city_area=None,
             country_code, sub_area_prefix='country_area'))
 
         if validation_data['country_area_keys'] and country_area:
-            if country_area not in validation_data['country_area_keys']:
+            choices = dict(validation_data['country_area_choices'])
+            if country_area not in choices.keys() and country_area not in choices.values():
                 errors['country_area'] = 'invalid_choice'
             else:
                 validation_data.update(i18n_country_data.get_validation_dict(
