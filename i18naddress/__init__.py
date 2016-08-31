@@ -58,8 +58,11 @@ class I18nCountryData(object):
             area_choices_prefix + '_choices': sub_area_choices,
             area_choices_prefix + '_keys': sub_area_keys}
         if 'zip' in country_data:
-            validation_data['postal_code_regexp'] = re.compile(
-                country_data['zip'], re.IGNORECASE)
+            if kwargs.get('parse_zip_regex', True):
+                zip_regexp = re.compile(country_data['zip'], re.IGNORECASE)
+            else:
+                zip_regexp = country_data['zip']
+            validation_data['postal_code_regexp'] = zip_regexp
         if 'zipex' in country_data:
             validation_data['postal_code_example'] = country_data['zipex']
         if 'require' in country_data:

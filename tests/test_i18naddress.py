@@ -60,17 +60,22 @@ def test_iterator():
     assert keys == ['US']
 
 
-@pytest.mark.parametrize('validation_args, validation_data', [
-    (('PL',), {'sub_area_keys': ['D', 'L'],
+@pytest.mark.parametrize('validation_args, validation_kwargs, validation_data', [
+    (('PL',), {}, {'sub_area_keys': ['D', 'L'],
                'require': ('street_address', 'city', 'postal_code'),
                'postal_code_regexp': re.compile(
                    PL_DATA['PL']['zip'], re.IGNORECASE),
                'sub_area_choices': [('D', 'Lower Silesian'), ('L', 'Lublin')]}),
-    (('PL', 'D'), {'sub_area_keys': [], 'sub_area_choices': [],
+    (('PL', 'D'), {}, {'sub_area_keys': [], 'sub_area_choices': [],
                    'postal_code_regexp': re.compile(
                        PL_DATA['PL']['zip'], re.IGNORECASE),
+                   'postal_code_example': '58-580',}),
+    (('PL', 'D'), {'parse_zip_regex': False}, {'sub_area_keys': [],
+                   'sub_area_choices': [],
+                   'postal_code_regexp': PL_DATA['PL']['zip'],
                    'postal_code_example': '58-580',})
 ])
-def test_get_validation_dict(validation_args, validation_data):
+def test_get_validation_dict(validation_args, validation_kwargs, validation_data):
     i18n_data = I18nCountryData()
-    assert i18n_data.get_validation_dict(*validation_args) == validation_data
+    assert i18n_data.get_validation_dict(
+        *validation_args, **validation_kwargs) == validation_data
