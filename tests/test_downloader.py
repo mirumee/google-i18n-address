@@ -37,13 +37,8 @@ def patch_i18n_country_data(monkeypatch, tmpdir):
         'all.json': {'PL': 'datą', 'US': 'data'}}),
     ('PL', ('pl.json', 'all.json'), {
         'pl.json': {'PL': 'datą'},
-        'all.json': {'PL': 'datą'}}
-     ),
-    pytest.mark.xfail((None, ('de.json',), None), raises=AssertionError),
-    pytest.mark.xfail(('PL', ('us.json',), None), raises=AssertionError),
-    pytest.mark.xfail(('DE', ('all.json',), None), raises=ValueError)
-])
-def test_downloader_invalid_country(tmpdir, country, file_names, data):
+        'all.json': {'PL': 'datą'}})])
+def test_downloader_country(tmpdir, country, file_names, data):
     data_dir = tmpdir.join('data')
     download(country)
     for file_name in file_names:
@@ -55,8 +50,7 @@ def test_downloader_invalid_country(tmpdir, country, file_names, data):
     ({'lang': 'de', 'name': 'SWITZERLAND', 'languages': 'de~fr',
       'sub_keys': 'AG~AR', 'sub_names': 'Aargau~Appenzell Ausserrhoden'},
      'CH', (mock.call('CH--fr'), mock.call('CH/AG'), mock.call('CH/AR'))),
-    ({'lang': 'de', 'name': 'GERMANY'}, 'CH', ())
-])
+    ({'lang': 'de', 'name': 'GERMANY'}, 'CH', ())])
 def test_process(monkeypatch, fetched_data, country, calls):
     work_queue_put = mock.Mock(return_value=None)
     monkeypatch.setattr('i18naddress.downloader.work_queue.put', work_queue_put)
