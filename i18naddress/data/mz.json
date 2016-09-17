@@ -1,1 +1,1 @@
-{"MZ": {"id": "data/MZ", "key": "MZ", "name": "MOZAMBIQUE", "zip": "\\d{4}", "zipex": "1102,1119,3212"}}
+{"MZ": {"fmt": "%N%n%O%n%A%n%Z %C", "id": "data/MZ", "key": "MZ", "name": "MOZAMBIQUE", "zip": "\\d{4}", "zipex": "1102,1119,3212"}}

@@ -1,1 +1,1 @@
-{"DE": {"fmt": "%N%n%O%n%D%n%A%n%Z %C", "id": "data/DE", "key": "DE", "name": "GERMANY", "posturl": "http://www.postdirekt.de/plzserver/", "require": "ACZ", "sublocality_name_type": "district", "zip": "\\d{5}", "zipex": "26133,53225"}}
+{"DE": {"fmt": "%N%n%O%n%A%n%Z %C", "id": "data/DE", "key": "DE", "name": "GERMANY", "posturl": "http://www.postdirekt.de/plzserver/", "require": "ACZ", "zip": "\\d{5}", "zipex": "26133,53225"}}
