@@ -24,15 +24,16 @@ def load_validation_data(country_code='all'):
 ValidationRules = namedtuple(
     'ValidationRules', [
         'allowed_fields', 'required_fields', 'upper_fields',
-        'country_area_choices', 'city_choices', 'city_area_choices',
-        'postal_code_matchers', 'postal_code_examples', 'postal_code_type',
-        'country_area_type', 'city_type', 'city_area_type'])
+        'country_area_type', 'country_area_choices',
+        'city_type', 'city_choices',
+        'city_area_type', 'city_area_choices',
+        'postal_code_matchers', 'postal_code_examples', 'postal_code_type'])
 
 
 def _make_choices(rules, translated=False):
     sub_keys = rules.get('sub_keys')
     if not sub_keys:
-        return set()
+        return []
     choices = []
     sub_keys = sub_keys.split('~')
     if not translated:
@@ -149,10 +150,11 @@ def get_validation_rules(address):
                 city_area_choices += _make_choices(
                     localized_city_data, translated=True)
     return ValidationRules(
-        allowed_fields, required_fields, upper_fields, country_area_choices,
-        city_choices, city_area_choices, postal_code_matchers,
-        postal_code_examples, postal_code_type, country_area_type, city_type,
-        city_area_type)
+        allowed_fields, required_fields, upper_fields,
+        country_area_type, country_area_choices,
+        city_type, city_choices,
+        city_area_type, city_area_choices,
+        postal_code_matchers, postal_code_examples, postal_code_type)
 
 
 class InvalidAddress(ValueError):
