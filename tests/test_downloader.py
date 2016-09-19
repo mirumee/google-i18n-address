@@ -46,6 +46,11 @@ def test_downloader_country(tmpdir, country, file_names, data):
         assert json.load(data_dir.join(file_name)) == data[file_name]
 
 
+def test_downloader_invalid_country():
+    with pytest.raises(ValueError):
+        download('XX')
+    
+
 @pytest.mark.parametrize('fetched_data, country, calls', [
     ({'lang': 'de', 'name': 'SWITZERLAND', 'languages': 'de~fr',
       'sub_keys': 'AG~AR', 'sub_names': 'Aargau~Appenzell Ausserrhoden'},

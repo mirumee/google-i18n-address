@@ -8,7 +8,24 @@ from i18naddress import I18nCountryData
 
 def test_invalid_country_code():
     with pytest.raises(ValueError):
+        I18nCountryData('XX')
+    with pytest.raises(ValueError):
         I18nCountryData('../../../etc/passwd')
+
+
+def test_iterationt():
+    data = I18nCountryData('PL')
+    data = list(data)
+    assert len(data) == 1
+    assert data[0][0] == 'PL'
+
+
+def test_dictionary_access():
+    data = I18nCountryData('US')
+    state = data['US/NV']
+    assert state['name'] == 'Nevada'
+    state = data[('US', 'CA')]
+    assert state['name'] == 'California'
 
 
 def test_validation_data_switzerland():

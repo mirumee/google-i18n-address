@@ -24,17 +24,15 @@ class I18nCountryData(object):
 
     def __init__(self, country_code='all'):
         if not VALID_COUNTRY_CODE.match(country_code):
-            raise ValueError('Wrong country code.')
-        try:
-            country_code = country_code.lower()
-        except AttributeError:
-            raise ValueError('Wrong country code.')
+            raise ValueError(
+                '%r is not a valid country code' % (country_code,))
+        country_code = country_code.lower()
         try:
             self._data = defaultdict(dict, json.load(
                 open(self.COUNTRY_VALIDATION_PATH % country_code)))
         except IOError:
             raise ValueError(
-                '%s is not supported country code' % country_code)
+                '%r is not a valid country code' % (country_code,))
 
     def __iter__(self):
         return iter(self._data.items())
