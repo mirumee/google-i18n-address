@@ -128,6 +128,8 @@ def get_validation_rules(address):
         if 'zip' in country_area_data:
             postal_code_matchers.append(
                 re.compile('^' + country_area_data['zip']))
+        if 'zipex' in country_area_data:
+            postal_code_examples = country_area_data['zipex']
         city_choices = _make_choices(country_area_data)
         for language in languages:
             localized_country_area_data = database['%s/%s--%s' % (
@@ -143,6 +145,8 @@ def get_validation_rules(address):
             if 'zip' in city_data:
                 postal_code_matchers.append(
                     re.compile('^' + city_data['zip']))
+            if 'zipex' in city_data:
+                postal_code_examples = city_data['zipex']
             city_area_choices = _make_choices(city_data)
             for language in languages:
                 localized_city_data = database['%s/%s/%s--%s' % (
