@@ -1,1 +1,1 @@
-{"AF": {"id": "data/AF", "key": "AF", "name": "AFGHANISTAN", "posturl": "http://afghanpost.gov.af/Postal%20Code/", "zip": "\\d{4}", "zipex": "1001,2601,3801"}}
+{"AF": {"fmt": "%N%n%O%n%A%n%C%n%Z", "id": "data/AF", "key": "AF", "name": "AFGHANISTAN", "posturl": "http://afghanpost.gov.af/Postal%20Code/", "zip": "\\d{4}", "zipex": "1001,2601,3801"}}

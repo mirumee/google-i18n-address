@@ -1,63 +1,44 @@
+# coding: utf-8
 from __future__ import unicode_literals
-import json
-import re
 import pytest
 
-try:
-    from unittest import mock
-except ImportError:
-    import mock
-
-from i18naddress import validate_areas, ValidationData
-
-PL_DATA = {
-    'PL': {'name': 'POLAND', 'zip': '\d{2}-\d{3}', 'sub_keys': 'D', 'sub_names': 'Lower Silesian'},  # noqa
-    'PL/D': {'name': 'Lower Silesia', 'zip': '53-\d{3}', 'sub_names': 'Wroclaw', 'sub_keys': 'WRO'},  # noqa
-    'PL/D/WRO': {'name': 'Wroclaw', 'sub_names': 'Altstadt~Oder Stadtteil', 'sub_keys': 'AS~OS'},  # noqa
-    'PL/D/WRO/AS': {'name': 'Altstad'},
-    'PL/D/WRO/OS': {'name': 'Oder Stadtteil'}
-}
-
-ALL_REQUIRE = {
-    'AR': {'require': 'ACDNOSZ'}
-}
-
-@pytest.fixture(autouse=True)
-def save_test_data(tmpdir):
-    data_dir = tmpdir.join('data')
-    json.dump(ALL_REQUIRE, data_dir.join('ar.json').open('w'))
-    json.dump(PL_DATA, data_dir.join('pl.json').open('w'))
-
+from i18naddress import validate_areas
 
 @pytest.mark.parametrize('kwargs, errors', [
-    ({'country_code': 'DE'}, {'country': 'invalid'}),
     ({'country_code': 'AR'},
-     {'country_area': 'required', 'city': 'required', 'city_area': 'required',
-      'postal_code': 'required', 'street_address': 'required'}),
-    ({'country_code': 'PL', 'country_area': 'Invalid'},
+     {}),
+    ({'country_code': 'CH', 'country_area': 'Invalid', 'city': 'Zürich',
+      'postal_code': '8022', 'street_address': 'Kappelergasse 1'},
      {'country_area': 'invalid_choice'}),
-    ({'country_code': 'PL', 'country_area': 'D', 'city': 'Invalid'},
+    ({'country_code': 'CN', 'country_area': '北京市', 'postal_code': '100084',
+      'city': 'Invalid', 'street_address': '中关村东路1号'},
      {'city': 'invalid_choice'}),
-    ({'country_code': 'PL', 'country_area': 'D', 'city': 'WRO', 'city_area': 'Invalid'},
+    ({'country_code': 'CN', 'country_area': '云南省', 'postal_code': '677400',
+      'city': '临沧市', 'city_area': 'Invalid', 'street_address': '...'},
      {'city_area': 'invalid_choice'}),
-    ({'country_code': 'PL', 'country_area': 'D', 'city': 'WRO', 'city_area': 'AS',
-      'postal_code': '53-335', 'street_address': 'Ab'}, {}),
-    ({'country_code': 'PL', 'postal_code': '77-777'}, {}),
-    ({'country_code': 'PL', 'country_area': 'D', 'postal_code': '77-777'},
+    ({'country_code': 'DE', 'city': 'Berlin', 'postal_code': '77-777',
+      'street_address': 'Kurfurstendamm 1'},
      {'postal_code': 'invalid'}),
-    ({'country_code': 'PL', 'postal_code': '77777'}, {'postal_code': 'invalid'}),
-])
+    ({'country_code': 'PL', 'city': 'Wrocław', 'postal_code': '77777',
+      'street_address': 'Tęczowa 7'},
+     {'postal_code': 'invalid'}),
+    ({'country_code': 'KR'},
+     {'country_area': 'required', 'postal_code': 'required',
+      'city': 'required', 'street_address': 'required'}),
+    ({'country_code': 'XX'},
+     {'country': 'invalid'})])
 def test_validate_areas_errors(kwargs, errors):
     assert validate_areas(**kwargs)[0] == errors
 
 
-def test_validation_data():
-    validation_data = validate_areas(
-        country_code='PL', country_area='D', city='WRO', city_area='AS')[1]
-    assert validation_data == ValidationData(
-        require=[], postal_code_regexp=re.compile(
-            '53-\\d{3}', re.IGNORECASE), postal_code_example=None,
-        country_area_keys=['D'], country_area_choices=[('D', 'Lower Silesian')],
-        city_keys=['WRO'], city_choices=[('WRO', 'Wroclaw')],
-        city_area_keys=['AS', 'OS'], city_area_choices=[
-            ('AS', 'Altstadt'), ('OS', 'Oder Stadtteil')])
+@pytest.mark.parametrize('kwargs', [
+    {'country_code': 'CN', 'country_area': '北京市', 'postal_code': '100084',
+      'city': '海淀区', 'street_address': '中关村东路1号'},
+    {'country_code': 'CN', 'country_area': '云南省', 'postal_code': '677400',
+      'city': '临沧市', 'city_area': '凤庆县', 'street_address': '中关村东路1号'},
+    {'country_code': 'KR', 'country_area': '서울특별시', 'postal_code': '135-984',
+      'city': '강남구', 'street_address': '역삼동 737번지 강남파이낸스센터'},
+    {'country_code': 'PL', 'city': 'Warszawa', 'postal_code': '00-374',
+      'street_address': 'Aleje Jerozolimskie 2'}])
+def test_validate_known_addresses(kwargs):
+    assert validate_areas(**kwargs)[0] == {}

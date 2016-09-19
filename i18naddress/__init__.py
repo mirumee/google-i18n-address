@@ -6,6 +6,8 @@ import re
 COUNTRIES_VALIDATION_DATA_DIR = os.path.join(
     os.path.dirname(__file__), 'data')
 
+VALID_COUNTRY_CODE = re.compile(r'^\w{2,3}$')
+
 
 class I18nCountryData(object):
 
@@ -21,16 +23,16 @@ class I18nCountryData(object):
         COUNTRIES_VALIDATION_DATA_DIR, '%s.json')
 
     def __init__(self, country_code='all'):
-        try:
-            country_code = country_code.lower()
-        except AttributeError:
-            raise ValueError('Wrong country code.')
+        if not VALID_COUNTRY_CODE.match(country_code):
+            raise ValueError(
+                '%r is not a valid country code' % (country_code,))
+        country_code = country_code.lower()
         try:
             self._data = defaultdict(dict, json.load(
                 open(self.COUNTRY_VALIDATION_PATH % country_code)))
         except IOError:
             raise ValueError(
-                '%s is not supported country code' % country_code)
+                '%r is not a valid country code' % (country_code,))
 
     def __iter__(self):
         return iter(self._data.items())
@@ -56,7 +58,7 @@ class I18nCountryData(object):
             sub_area_choices = []
         validation_data = {
             area_choices_prefix + '_choices': sub_area_choices,
-            area_choices_prefix + '_keys': sub_area_keys}
+            area_choices_prefix + '_keys': set(sub_area_keys)}
         if 'zip' in country_data:
             validation_data['postal_code_regexp'] = re.compile(
                 country_data['zip'], re.IGNORECASE)
@@ -64,8 +66,8 @@ class I18nCountryData(object):
             validation_data['postal_code_example'] = country_data['zipex']
         if 'require' in country_data:
             require_mapping = dict(self.REQUIRE_MAPPING)
-            validation_data['require'] = tuple(
-                require_mapping[l] for l in country_data['require'])
+            validation_data['require'] = {
+                require_mapping[l] for l in country_data['require']}
         return validation_data
 
 
@@ -77,9 +79,11 @@ ValidationData = namedtuple('ValidationData', (
 def validate_areas(country_code, country_area=None, city=None, city_area=None,
                    postal_code=None, street_address=None):
     validation_data = {
-        'country_area_keys': None, 'country_area_choices': None, 'city_keys': None,
-        'city_choices': None, 'city_area_keys': None, 'city_area_choices': None,
-        'postal_code_regexp': None, 'postal_code_example': None, 'require': []}
+        'country_area_keys': set(), 'country_area_choices': [],
+        'city_keys': set(), 'city_choices': [],
+        'city_area_keys': set(), 'city_area_choices': [],
+        'postal_code_regexp': None, 'postal_code_example': None,
+        'require': set()}
     errors = {}
     try:
         i18n_country_data = I18nCountryData(country_code)
