@@ -8,10 +8,10 @@ import os
 
 import requests
 
-from . import COUNTRIES_VALIDATION_DATA_DIR
+from . import VALIDATION_DATA_DIR
 
 MAIN_URL = 'http://i18napis.appspot.com/address/data'
-COUNTRY_PATH = os.path.join(COUNTRIES_VALIDATION_DATA_DIR, '%s.json')
+DATA_PATH = os.path.join(VALIDATION_DATA_DIR, '%s.json')
 
 logger = logging.getLogger(__name__)
 work_queue = JoinableQueue()
@@ -69,8 +69,8 @@ def serialize(obj, path):
 
 
 def download(country=None, processes=16):
-    if not os.path.exists(COUNTRIES_VALIDATION_DATA_DIR):
-        os.mkdir(COUNTRIES_VALIDATION_DATA_DIR)
+    if not os.path.exists(VALIDATION_DATA_DIR):
+        os.mkdir(VALIDATION_DATA_DIR)
     data = manager.dict()
     countries = get_countries()
     if country:
@@ -85,7 +85,7 @@ def download(country=None, processes=16):
     work_queue.join()
     workers.terminate()
     logger.debug('Queue finished')
-    with io.open(COUNTRY_PATH % 'all', 'w', encoding='utf8') as all_output:
+    with io.open(DATA_PATH % 'all', 'w', encoding='utf8') as all_output:
         all_output.write(u'{')
         for country in countries:
             country_dict = {}
@@ -94,7 +94,7 @@ def download(country=None, processes=16):
                     country_dict[key] = address_data
             logger.debug('Saving %s', country)
             country_json = serialize(
-                country_dict, COUNTRY_PATH % country.lower())
+                country_dict, DATA_PATH % country.lower())
             all_output.write(country_json[1:-1])
             if country != countries[-1]:
                 all_output.write(u',')

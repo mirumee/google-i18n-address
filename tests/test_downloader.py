@@ -3,14 +3,13 @@ from __future__ import unicode_literals
 import json
 import os
 
+from i18naddress.downloader import download, process
 import pytest
 
 try:
     from unittest import mock
 except ImportError:
     import mock
-
-from i18naddress.downloader import download, process
 
 
 @pytest.fixture(autouse=True)
@@ -22,9 +21,10 @@ def patch_i18n_country_data(monkeypatch, tmpdir):
     monkeypatch.setattr('i18naddress.downloader.work_queue', mock.MagicMock())
     monkeypatch.setattr('i18naddress.downloader.get_countries', lambda: all_countries)
     monkeypatch.setattr(
-        'i18naddress.downloader.COUNTRIES_VALIDATION_DATA_DIR', str(data_dir))
+        'i18naddress.downloader.VALIDATION_DATA_DIR', str(data_dir))
     monkeypatch.setattr(
-        'i18naddress.downloader.COUNTRY_PATH', os.path.join(str(data_dir), '%s.json'))
+        'i18naddress.downloader.DATA_PATH',
+        os.path.join(str(data_dir), '%s.json'))
     manager = mock.MagicMock()
     manager.dict.return_value = manager_dict
     monkeypatch.setattr('i18naddress.downloader.manager', manager)
