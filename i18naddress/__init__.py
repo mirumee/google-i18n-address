@@ -64,9 +64,9 @@ def _make_choices(rules, translated=False):
 
 def _match_choices(value, choices):
     if value:
-        value = value.strip()
+        value = value.strip().lower()
     for name, label in choices:
-        if label == value:
+        if label.lower() == value:
             return name
 
 
@@ -242,13 +242,17 @@ def normalize_address(address):
                 if not matcher.match(postal_code):
                     errors['postal_code'] = 'invalid'
                     break
-        if not postal_code and 'postal_code' in rules.required_fields:
+        if 'postal_code' not in rules.allowed_fields:
+            cleaned_data['postal_code'] = ''
+        elif not postal_code and 'postal_code' in rules.required_fields:
             errors['postal_code'] = 'required'
         street_address = address.get('street_address', '')
         if not street_address and 'street_address' in rules.required_fields:
             errors['street_address'] = 'required'
         sorting_code = address.get('sorting_code', '')
-        if not sorting_code and 'sorting_code' in rules.required_fields:
+        if 'sorting_code' not in rules.allowed_fields:
+            cleaned_data['sorting_code'] = ''
+        elif not sorting_code and 'sorting_code' in rules.required_fields:
             errors['sorting_code'] = 'required'
     if errors:
         raise InvalidAddress('Invalid address', errors)

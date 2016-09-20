@@ -82,6 +82,13 @@ def test_localization_handling():
     assert address['country_code'] == 'US'
     assert address['country_area'] == 'CA'
     address = normalize_address({
+        'country_code': 'us',
+        'country_area': 'CALIFORNIA',
+        'postal_code': '94037',
+        'city': 'Mountain View',
+        'street_address': '1600 Charleston Rd.'})
+    assert address['country_area'] == 'CA'
+    address = normalize_address({
         'country_code': 'CN',
         'country_area': 'Beijing Shi',
         'postal_code': '100084',
@@ -89,3 +96,13 @@ def test_localization_handling():
         'street_address': '#1 Zhongguancun East Road'})
     assert address['country_area'] == '北京市'
     assert address['city'] == '海淀区'
+    address = normalize_address({
+        'country_code': 'AE',
+        'country_area': 'Dubai',
+        'postal_code': '123456',
+        'city': 'Dubai',
+        'sorting_code': '654321',
+        'street_address': 'P.O Box 1234'})
+    assert address['city'] == 'DUBAI'
+    assert address['postal_code'] == ''
+    assert address['sorting_code'] == ''
