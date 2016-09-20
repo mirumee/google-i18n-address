@@ -1,4 +1,6 @@
-from collections import defaultdict, namedtuple
+from __future__ import unicode_literals
+
+from collections import namedtuple
 import json
 import os
 import re
@@ -169,7 +171,7 @@ class InvalidAddress(ValueError):
 
 def _normalize_country_area(rules, data, errors):
     value = data.get('country_area')
-    if not 'country_area' in rules.allowed_fields:
+    if 'country_area' not in rules.allowed_fields:
         data['country_area'] = ''
     elif not value and 'country_area' in rules.required_fields:
         errors['country_area'] = 'required'
@@ -186,7 +188,7 @@ def _normalize_country_area(rules, data, errors):
 
 def _normalize_city(rules, data, errors):
     value = data.get('city')
-    if not 'city' in rules.allowed_fields:
+    if 'city' not in rules.allowed_fields:
         data['city'] = ''
     elif not value and 'city' in rules.required_fields:
         errors['city'] = 'required'
@@ -203,7 +205,7 @@ def _normalize_city(rules, data, errors):
 
 def _normalize_city_area(rules, data, errors):
     value = data.get('city_area')
-    if not 'city_area' in rules.allowed_fields:
+    if 'city_area' not in rules.allowed_fields:
         data['city_area'] = ''
     elif not value and 'city_area' in rules.required_fields:
         errors['city_area'] = 'required'
@@ -226,6 +228,11 @@ def normalize_address(address):
         errors['country_code'] = 'invalid'
     else:
         cleaned_data = address.copy()
+        country_code = cleaned_data.get('country_code')
+        if not country_code:
+            errors['country_code'] = 'required'
+        else:
+            cleaned_data['country_code'] = country_code.upper()
         _normalize_country_area(rules, cleaned_data, errors)
         _normalize_city(rules, cleaned_data, errors)
         _normalize_city_area(rules, cleaned_data, errors)

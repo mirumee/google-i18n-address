@@ -1,10 +1,11 @@
 from __future__ import unicode_literals
+
 import io
 import json
 import logging
-from multiprocessing.pool import ThreadPool
-from multiprocessing import JoinableQueue, Manager
 import os
+from multiprocessing import JoinableQueue, Manager
+from multiprocessing.pool import ThreadPool
 
 import requests
 

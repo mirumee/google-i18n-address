@@ -1,8 +1,9 @@
 # coding: utf-8
 from __future__ import unicode_literals
 
-from i18naddress import get_validation_rules, load_validation_data
 import pytest
+
+from i18naddress import get_validation_rules, load_validation_data
 
 
 def test_invalid_country_code():
@@ -24,6 +25,7 @@ def test_validation_rules_switzerland():
         'company_name', 'city', 'postal_code', 'street_address', 'name'}
     assert validation_data.required_fields == {
         'city', 'postal_code', 'street_address'}
+
 
 @pytest.mark.parametrize('country, levels', [
     ('CN', ['province', 'city', 'district']),
