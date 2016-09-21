@@ -29,8 +29,9 @@ def get_countries():  # pragma: no cover
     return fetch(MAIN_URL)['countries'].split('~') + ['ZZ']
 
 
-def process(key):
-    url = '%s/%s' % (MAIN_URL, key)
+def process(key, language):
+    full_key = '%s--%s' % (key, language) if language else key
+    url = '%s/%s' % (MAIN_URL, full_key)
     data = fetch(url)
     lang = data.get('lang')
     languages = data.get('languages')
@@ -38,27 +39,27 @@ def process(key):
         langs = languages.split('~')
         langs.remove(lang)
         for lang in langs:
-            work_queue.put('%s--%s' % (key, lang))
+            work_queue.put((key, lang))
     if 'sub_keys' in data:
         sub_keys = data['sub_keys'].split('~')
         for sub_key in sub_keys:
-            work_queue.put('%s/%s' % (key, sub_key))
-    return data
+            work_queue.put(('%s/%s' % (key, sub_key), language))
+    return full_key, data
 
 
 def worker(data):  # pragma: no cover
     while True:
         try:
-            key = work_queue.get()
+            key, lang = work_queue.get()
         except EOFError:
             break
         try:
-            address_data = process(key)
+            full_key, address_data = process(key, lang)
         except Exception:
             logger.exception('Can\'t download %s', key)
-            work_queue.put(key)
+            work_queue.put((key, lang))
         else:
-            data[key] = address_data
+            data[full_key] = address_data
         work_queue.task_done()
 
 
@@ -81,7 +82,7 @@ def download(country=None, processes=16):
                 '%s is not supported country code' % country)
         countries = [country]
     for country in countries:
-        work_queue.put(country)
+        work_queue.put((country, None))
     workers = ThreadPool(processes, worker, initargs=(data,))
     work_queue.join()
     workers.terminate()
