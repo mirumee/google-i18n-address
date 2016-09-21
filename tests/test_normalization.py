@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 import pytest
 
-from i18naddress import InvalidAddress, normalize_address
+from i18naddress import InvalidAddress, format_address, normalize_address
 
 
 @pytest.mark.parametrize('address, errors', [
@@ -106,3 +106,15 @@ def test_localization_handling():
     assert address['city'] == 'DUBAI'
     assert address['postal_code'] == ''
     assert address['sorting_code'] == ''
+
+
+def test_address_formatting():
+    address = {
+        'country_code': 'CN',
+        'country_area': '云南省',
+        'postal_code': '677400',
+        'city': '临沧市',
+        'city_area': '凤庆县',
+        'street_address': '中关村东路1号'}
+    result = format_address(address, latin=False)
+    assert result == '677400\n云南省临沧市凤庆县\n中关村东路1号\nCHINA'

@@ -25,6 +25,8 @@ def load_validation_data(country_code='all'):
 
 ValidationRules = namedtuple(
     'ValidationRules', [
+        'country_name',
+        'address_format', 'address_latin_format',
         'allowed_fields', 'required_fields', 'upper_fields',
         'country_area_type', 'country_area_choices',
         'city_type', 'city_choices',
@@ -91,7 +93,10 @@ def get_validation_rules(address):
         'S': 'country_area',
         'X': 'sorting_code',
         'Z': 'postal_code'}
-    format_fields = re.finditer(r'%([ACDNOSXZ])', country_data['fmt'])
+    country_name = country_data.get('name', '')
+    address_format = country_data['fmt']
+    address_latin_format = country_data.get('lfmt', address_format)
+    format_fields = re.finditer(r'%([ACDNOSXZ])', address_format)
     allowed_fields = {FIELD_MAPPING[m.group(1)] for m in format_fields}
     required_fields = {FIELD_MAPPING[f] for f in country_data['require']}
     upper_fields = {FIELD_MAPPING[f] for f in country_data['upper']}
@@ -156,6 +161,8 @@ def get_validation_rules(address):
                 city_area_choices += _make_choices(
                     localized_city_data, translated=True)
     return ValidationRules(
+        country_name,
+        address_format, address_latin_format,
         allowed_fields, required_fields, upper_fields,
         country_area_type, country_area_choices,
         city_type, city_choices,
@@ -257,3 +264,31 @@ def normalize_address(address):
     if errors:
         raise InvalidAddress('Invalid address', errors)
     return cleaned_data
+
+
+def _format_address_line(line_format, address, latin):
+    REPLACEMENTS = {
+        '%A': address['street_address'],
+        '%C': address['city'] if 'city' in address else '',
+        '%D': address['city_area'] if 'city_area' in address else '',
+        '%N': address['name'] if 'name' in address else '',
+        '%O': address['company_name'] if 'company_name' in address else '',
+        '%S': address['country_area'] if 'country_area' in address else '',
+        '%X': address['sorting_code'] if 'sorting_code' in address else '',
+        '%Z': address['postal_code'] if 'postal_code' in address else ''}
+    fields = re.split('(%.)', line_format)
+    fields = [REPLACEMENTS.get(f, f) for f in fields]
+    return ''.join(fields).strip()
+
+
+def format_address(address, latin=True):
+    rules = get_validation_rules(address)
+    address_format = \
+        rules.address_latin_format if latin else rules.address_format
+    address_line_formats = address_format.split('%n')
+    address_lines = [
+        _format_address_line(lf, address, latin=latin)
+        for lf in address_line_formats]
+    address_lines.append(rules.country_name)
+    address_lines = filter(None, address_lines)
+    return '\n'.join(address_lines)
