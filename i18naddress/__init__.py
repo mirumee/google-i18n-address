@@ -40,14 +40,15 @@ def _make_choices(rules, translated=False):
         return []
     choices = []
     sub_keys = sub_keys.split('~')
-    if not translated:
-        choices += [(key, key) for key in sub_keys]
     sub_names = rules.get('sub_names')
     if sub_names:
         choices += [
             (key, value)
             for key, value in zip(sub_keys, sub_names.split('~'))
             if value]
+    else:
+        if not translated:
+            choices += [(key, key) for key in sub_keys]
     if not translated:
         sub_lnames = rules.get('sub_lnames')
         if sub_lnames:
@@ -68,6 +69,8 @@ def _match_choices(value, choices):
     if value:
         value = value.strip().lower()
     for name, label in choices:
+        if name.lower() == value:
+            return name
         if label.lower() == value:
             return name
 
