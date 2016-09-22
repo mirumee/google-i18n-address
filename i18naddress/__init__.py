@@ -283,8 +283,8 @@ def _format_address_line(line_format, address, latin):
 
 def format_address(address, latin=False):
     rules = get_validation_rules(address)
-    address_format = \
-        rules.address_latin_format if latin else rules.address_format
+    address_format = (
+        rules.address_latin_format if latin else rules.address_format)
     address_line_formats = address_format.split('%n')
     address_lines = [
         _format_address_line(lf, address, latin=latin)
