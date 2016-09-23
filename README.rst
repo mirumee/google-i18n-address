@@ -21,24 +21,25 @@ The ``normalize_address`` function checks the address and either returns its
 canonical form (suitable for storage and use in addressing envelopes) or
 raises an ``InvalidAddress`` exception that contains a list of errors.
 
+
 Address fields
 ~~~~~~~~~~~~~~
 
 Here is the list of recognized fields:
 
- * ``country_code`` is a two-letter ISO 3166-1 country code
- * ``country_area`` is a designation of a region, province or state,
-   recognized values include official names, designated abbreviations,
-   official translations and latin transliterations
- * ``city`` is a city or town name, recognized values include official names,
-   official translations and latin transliterations
- * ``city_area`` is a sublocality like a district, recognized values include
-   official names, official translations and latin transliterations
- * ``street_address`` is the (possibly multiline) street address
- * ``postal_code`` is a postal code or zip code
- * ``sorting_code`` is a sorting code
- * ``name`` is a person's name
- * ``company_name`` is a name of a company or organization
+* ``country_code`` is a two-letter ISO 3166-1 country code
+* ``country_area`` is a designation of a region, province or state,
+  recognized values include official names, designated abbreviations,
+  official translations and latin transliterations
+* ``city`` is a city or town name, recognized values include official names,
+  official translations and latin transliterations
+* ``city_area`` is a sublocality like a district, recognized values include
+  official names, official translations and latin transliterations
+* ``street_address`` is the (possibly multiline) street address
+* ``postal_code`` is a postal code or zip code
+* ``sorting_code`` is a sorting code
+* ``name`` is a person's name
+* ``company_name`` is a name of a company or organization
 
 
 Errors
@@ -95,6 +96,46 @@ Postal code/zip code validation example:
     ...     print(e.errors)
     ...
     {'postal_code': 'invalid'}
+
+
+Address formatting
+~~~~~~~~~~~~~~~~~~
+
+You can use the ``format_address`` function to format the address following
+the destination country's post office regulations:
+
+.. code:: python
+
+    >>> address = {
+    ...     'country_code': 'CN',
+    ...     'country_area': '云南省',
+    ...     'postal_code': '677400',
+    ...     'city': '临沧市',
+    ...     'city_area': '凤庆县',
+    ...     'street_address': '中关村东路1号'}
+    >>>> print(format_address(address))
+    677400
+    云南省临沧市凤庆县
+    中关村东路1号
+    CHINA
+
+You can also ask for a latin-friendly version:
+
+.. code:: python
+
+    >>> address = {
+    ...     'country_code': 'CN',
+    ...     'country_area': '云南省',
+    ...     'postal_code': '677400',
+    ...     'city': '临沧市',
+    ...     'city_area': '凤庆县',
+    ...     'street_address': '中关村东路1号'}
+    >>> print(format_address(address, latin=True))
+    中关村东路1号
+    凤庆县
+    临沧市
+    云南省, 677400
+    CHINA
 
 
 Validation rules
