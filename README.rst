@@ -205,7 +205,51 @@ All raw data are stored in ``I18nCountryData`` dict like object:
 Used with Django form
 ---------------------
 
-TBD
+Django forms will return only required address fields in ``form.cleaned_data`` dict. So addresses in the database will be normalized.
+
+.. code:: python
+
+    from django import forms
+
+    from i18naddress import InvalidAddress, normalize_address, get_validation_rules
+
+
+    class AddressForm(forms.Form):
+
+        COUNTRY_CHOICES = [
+            ('PL', 'Poland'),
+            ('AE', 'United Arab Emirates'),
+            ('US', 'United States of America')]
+        
+        ERROR_MESSAGES = {
+            'required': 'This field is required',
+            'invalid': 'Enter a valid name'}
+
+        name = forms.CharField(required=True)
+        company_name = forms.CharField(required=False)
+        street_address = forms.CharField(required=False)
+        city = forms.CharField(required=False)
+        city_area = forms.CharField(required=False)
+        country_code = forms.ChoiceField(required=True, choices=COUNTRY_CHOICES)
+        country_area = forms.CharField(required=False)
+        postal_code = forms.CharField(required=False)
+
+        def clean(self):
+            clean_data = super(AddressForm, self).clean()
+            validation_rules = get_validation_rules(clean_data)
+            try:
+                valid_address = normalize_address(clean_data)
+            except InvalidAddress as e:
+                errors = e.errors
+                valid_address = None
+                for field, error_code in errors.items():
+                    if field == 'postal_code':
+                        examples = validation_rules.postal_code_examples
+                        msg = 'Invalid value, use fomat like %s' % examples
+                    else:
+                        msg = ERROR_MESSAGES[error_code]
+                        self.add_error(field, msg)
+            return valid_address or clean_data
 
 
 .. image:: https://ga-beacon.appspot.com/UA-10159761-14/mirumee/google-i18n-address?pixel
