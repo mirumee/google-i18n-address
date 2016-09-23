@@ -161,9 +161,10 @@ useful for constructing address forms specific for a particular country:
         city_choices=[],
         city_area_type='suburb',
         city_area_choices=[],
+        postal_code_type='zip',
         postal_code_matchers=[re.compile('^(\\d{5})(?:[ \\-](\\d{4}))?$'), re.compile('^9[0-5]|96[01]')],
         postal_code_examples='90000,96199',
-        postal_code_type='zip')
+        postal_code_prefix=')
 
 
 Raw Google's i18n data
