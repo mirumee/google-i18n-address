@@ -197,6 +197,8 @@ def _normalize_country_area(rules, data, errors):
             errors['country_area'] = 'invalid'
     if value and 'country_area' in rules.upper_fields:
         data['country_area'] = value.upper()
+    elif not value:
+        data['country_area'] = ''
 
 
 def _normalize_city(rules, data, errors):
@@ -214,6 +216,8 @@ def _normalize_city(rules, data, errors):
             errors['city'] = 'invalid'
     if value and 'city' in rules.upper_fields:
         data['city'] = value.upper()
+    elif not value:
+        data['city'] = ''
 
 
 def _normalize_city_area(rules, data, errors):
@@ -231,6 +235,8 @@ def _normalize_city_area(rules, data, errors):
             errors['city_area'] = 'invalid'
     if value and 'city_area' in rules.upper_fields:
         data['city_area'] = value.upper()
+    elif not value:
+        data['city_area'] = ''
 
 
 def normalize_address(address):
@@ -298,3 +304,32 @@ def format_address(address, latin=False):
     address_lines.append(rules.country_name)
     address_lines = filter(None, address_lines)
     return '\n'.join(address_lines)
+
+
+def latinize_address(address, normalized=False):
+    if not normalized:
+        address = normalize_address(address)
+    cleaned_data = address.copy()
+    country_code = address.get('country_code')
+    if country_code:
+        database = load_validation_data(country_code)
+        country_area = address['country_area']
+        if country_area:
+            key = '%s/%s' % (country_code, country_area)
+            country_area_data = database.get(key)
+            if country_area_data:
+                cleaned_data['country_area'] = country_area_data.get(
+                    'lname', country_area)
+                city = address['city']
+                key = '%s/%s/%s' % (country_code, country_area, city)
+                city_data = database.get(key)
+                if city_data:
+                    cleaned_data['city'] = city_data.get('lname', city)
+                    city_area = address['city_area']
+                    key = '%s/%s/%s/%s' % (
+                        country_code, country_area, city, city_area)
+                    city_area_data = database.get(key)
+                    if city_area_data:
+                        cleaned_data['city_area'] = city_data.get(
+                            'lname', city_area)
+    return cleaned_data

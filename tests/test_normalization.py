@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 
 import pytest
 
-from i18naddress import InvalidAddress, format_address, normalize_address
+from i18naddress import (
+    InvalidAddress, format_address, latinize_address, normalize_address)
 
 
 @pytest.mark.parametrize('address, errors', [
@@ -117,4 +118,29 @@ def test_address_formatting():
         'city_area': '凤庆县',
         'street_address': '中关村东路1号'}
     result = format_address(address, latin=False)
-    assert result == '677400\n云南省临沧市凤庆县\n中关村东路1号\nCHINA'
+    assert result == (
+        '677400\n'
+        '云南省临沧市凤庆县\n'
+        '中关村东路1号\n'
+        'CHINA')
+
+
+def test_address_latinization():
+    address = {
+        'name': 'Zhang San',
+        'company_name': 'Beijing Kid Toy Company',
+        'country_code': 'CN',
+        'country_area': '北京市',
+        'city': '海淀区',
+        'postal_code': '100084',
+        'sorting_code': '',
+        'street_address': '#1 Zhongguancun East Road'}
+    address = latinize_address(address)
+    result = format_address(address, latin=True)
+    assert result == (
+        'Zhang San\n'
+        'Beijing Kid Toy Company\n'
+        '#1 Zhongguancun East Road\n'
+        'Haidian Qu\n'
+        'Beijing Shi, 100084\n'
+        'CHINA')
