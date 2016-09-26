@@ -76,10 +76,9 @@ def _match_choices(value, choices):
             return name
 
 
-def get_validation_rules(address):
+def _load_country_data(country_code):
     database = load_validation_data('zz')
     country_data = database['ZZ']
-    country_code = address.get('country_code')
     if country_code:
         country_code = country_code.upper()
         if country_code.lower() == 'zz':
@@ -87,6 +86,12 @@ def get_validation_rules(address):
                 '%r is not a valid country code' % (country_code,))
         database = load_validation_data(country_code.lower())
         country_data.update(database[country_code])
+    return country_data, database
+
+
+def get_validation_rules(address):
+    country_code = address.get('country_code', '').upper()
+    country_data, database = _load_country_data(country_code)
 
     FIELD_MAPPING = {
         'A': 'street_address',
@@ -182,61 +187,20 @@ class InvalidAddress(ValueError):
         self.errors = errors
 
 
-def _normalize_country_area(rules, data, errors):
-    value = data.get('country_area')
-    if 'country_area' not in rules.allowed_fields:
-        data['country_area'] = ''
-    elif not value and 'country_area' in rules.required_fields:
-        errors['country_area'] = 'required'
-    elif rules.country_area_choices:
-        value = _match_choices(
-            value, rules.country_area_choices)
+def _normalize_field(name, rules, data, choices, errors):
+    value = data.get(name)
+    if name not in rules.allowed_fields:
+        data[name] = ''
+    elif not value and name in rules.required_fields:
+        errors[name] = 'required'
+    elif choices:
+        value = _match_choices(value, choices)
         if value is not None:
-            data['country_area'] = value
+            data[name] = value
         else:
-            errors['country_area'] = 'invalid'
-    if value and 'country_area' in rules.upper_fields:
-        data['country_area'] = value.upper()
-    elif not value:
-        data['country_area'] = ''
-
-
-def _normalize_city(rules, data, errors):
-    value = data.get('city')
-    if 'city' not in rules.allowed_fields:
-        data['city'] = ''
-    elif not value and 'city' in rules.required_fields:
-        errors['city'] = 'required'
-    elif rules.city_choices:
-        value = _match_choices(
-            value, rules.city_choices)
-        if value is not None:
-            data['city'] = value
-        else:
-            errors['city'] = 'invalid'
-    if value and 'city' in rules.upper_fields:
-        data['city'] = value.upper()
-    elif not value:
-        data['city'] = ''
-
-
-def _normalize_city_area(rules, data, errors):
-    value = data.get('city_area')
-    if 'city_area' not in rules.allowed_fields:
-        data['city_area'] = ''
-    elif not value and 'city_area' in rules.required_fields:
-        errors['city_area'] = 'required'
-    elif rules.city_area_choices:
-        value = _match_choices(
-            value, rules.city_area_choices)
-        if value is not None:
-            data['city_area'] = value
-        else:
-            errors['city_area'] = 'invalid'
-    if value and 'city_area' in rules.upper_fields:
-        data['city_area'] = value.upper()
-    elif not value:
-        data['city_area'] = ''
+            errors[name] = 'invalid'
+    if not value:
+        data[name] = ''
 
 
 def normalize_address(address):
@@ -252,42 +216,48 @@ def normalize_address(address):
             errors['country_code'] = 'required'
         else:
             cleaned_data['country_code'] = country_code.upper()
-        _normalize_country_area(rules, cleaned_data, errors)
-        _normalize_city(rules, cleaned_data, errors)
-        _normalize_city_area(rules, cleaned_data, errors)
+        _normalize_field(
+            'country_area', rules, cleaned_data, rules.country_area_choices,
+            errors)
+        _normalize_field(
+            'city', rules, cleaned_data, rules.city_choices, errors)
+        _normalize_field(
+            'city_area', rules, cleaned_data, rules.city_area_choices, errors)
+        _normalize_field(
+            'postal_code', rules, cleaned_data, [], errors)
         postal_code = address.get('postal_code', '')
         if rules.postal_code_matchers and postal_code:
             for matcher in rules.postal_code_matchers:
                 if not matcher.match(postal_code):
                     errors['postal_code'] = 'invalid'
                     break
-        if 'postal_code' not in rules.allowed_fields:
-            cleaned_data['postal_code'] = ''
-        elif not postal_code and 'postal_code' in rules.required_fields:
-            errors['postal_code'] = 'required'
-        street_address = address.get('street_address', '')
-        if not street_address and 'street_address' in rules.required_fields:
-            errors['street_address'] = 'required'
-        sorting_code = address.get('sorting_code', '')
-        if 'sorting_code' not in rules.allowed_fields:
-            cleaned_data['sorting_code'] = ''
-        elif not sorting_code and 'sorting_code' in rules.required_fields:
-            errors['sorting_code'] = 'required'
+        _normalize_field(
+            'street_address', rules, cleaned_data, [], errors)
+        _normalize_field(
+            'sorting_code', rules, cleaned_data, [], errors)
     if errors:
         raise InvalidAddress('Invalid address', errors)
     return cleaned_data
 
 
-def _format_address_line(line_format, address, latin):
+def _format_address_line(line_format, address, rules):
+
+    def _get_field(name):
+        value = address.get(name, '')
+        if name in rules.upper_fields:
+            value = value.upper()
+        return value
+
     REPLACEMENTS = {
-        '%A': address['street_address'],
-        '%C': address['city'] if 'city' in address else '',
-        '%D': address['city_area'] if 'city_area' in address else '',
-        '%N': address['name'] if 'name' in address else '',
-        '%O': address['company_name'] if 'company_name' in address else '',
-        '%S': address['country_area'] if 'country_area' in address else '',
-        '%X': address['sorting_code'] if 'sorting_code' in address else '',
-        '%Z': address['postal_code'] if 'postal_code' in address else ''}
+        '%A': _get_field('street_address'),
+        '%C': _get_field('city'),
+        '%D': _get_field('city_area'),
+        '%N': _get_field('name'),
+        '%O': _get_field('company_name'),
+        '%S': _get_field('country_area'),
+        '%X': _get_field('sorting_code'),
+        '%Z': _get_field('postal_code')}
+
     fields = re.split('(%.)', line_format)
     fields = [REPLACEMENTS.get(f, f) for f in fields]
     return ''.join(fields).strip()
@@ -299,7 +269,7 @@ def format_address(address, latin=False):
         rules.address_latin_format if latin else rules.address_format)
     address_line_formats = address_format.split('%n')
     address_lines = [
-        _format_address_line(lf, address, latin=latin)
+        _format_address_line(lf, address, rules)
         for lf in address_line_formats]
     address_lines.append(rules.country_name)
     address_lines = filter(None, address_lines)
@@ -310,26 +280,30 @@ def latinize_address(address, normalized=False):
     if not normalized:
         address = normalize_address(address)
     cleaned_data = address.copy()
-    country_code = address.get('country_code')
+    country_code = address.get('country_code', '').upper()
+    dummy_country_data, database = _load_country_data(country_code)
     if country_code:
-        database = load_validation_data(country_code)
         country_area = address['country_area']
         if country_area:
             key = '%s/%s' % (country_code, country_area)
             country_area_data = database.get(key)
             if country_area_data:
                 cleaned_data['country_area'] = country_area_data.get(
-                    'lname', country_area)
+                    'lname',
+                    country_area_data.get('name', country_area))
                 city = address['city']
                 key = '%s/%s/%s' % (country_code, country_area, city)
                 city_data = database.get(key)
                 if city_data:
-                    cleaned_data['city'] = city_data.get('lname', city)
+                    cleaned_data['city'] = city_data.get(
+                        'lname',
+                        city_data.get('name', city))
                     city_area = address['city_area']
                     key = '%s/%s/%s/%s' % (
                         country_code, country_area, city, city_area)
                     city_area_data = database.get(key)
                     if city_area_data:
                         cleaned_data['city_area'] = city_data.get(
-                            'lname', city_area)
+                            'lname',
+                            city_area_data.get('name', city_area))
     return cleaned_data

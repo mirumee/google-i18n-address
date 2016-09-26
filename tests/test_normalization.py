@@ -101,10 +101,11 @@ def test_localization_handling():
         'country_code': 'AE',
         'country_area': 'Dubai',
         'postal_code': '123456',
-        'city': 'Dubai',
         'sorting_code': '654321',
         'street_address': 'P.O Box 1234'})
-    assert address['city'] == 'DUBAI'
+    print(address)
+    assert address['country_area'] == 'إمارة دبيّ'
+    assert address['city'] == ''
     assert address['postal_code'] == ''
     assert address['sorting_code'] == ''
 
@@ -127,6 +128,14 @@ def test_address_formatting():
 
 def test_address_latinization():
     address = {
+        'country_code': 'US',
+        'country_area': 'CA',
+        'postal_code': '94037',
+        'city': 'Mountain View',
+        'street_address': '1600 Charleston Rd.'}
+    address = latinize_address(address)
+    assert address['country_area'] == 'California'
+    address = {
         'name': 'Zhang San',
         'company_name': 'Beijing Kid Toy Company',
         'country_code': 'CN',
@@ -142,5 +151,5 @@ def test_address_latinization():
         'Beijing Kid Toy Company\n'
         '#1 Zhongguancun East Road\n'
         'Haidian Qu\n'
-        'Beijing Shi, 100084\n'
+        'BEIJING SHI, 100084\n'
         'CHINA')

@@ -98,6 +98,58 @@ Postal code/zip code validation example:
     {'postal_code': 'invalid'}
 
 
+Address latinization
+~~~~~~~~~~~~~~~~~~~~
+
+In some cases it may be useful to display foreign addresses in a more
+accessible format. You can use the ``latinize_address`` function to obtain
+a more verbose, latinized version of an address.
+
+This version is suitable for display and useful for full text search indexing
+but the normalized form is what should be stored in the database and used when
+printing address labels.
+
+.. code:: python
+
+    >>> from i18naddress import latinize_address
+    >>> address = {
+    ...     'country_code': 'CN',
+    ...     'country_area': '云南省',
+    ...     'postal_code': '677400',
+    ...     'city': '临沧市',
+    ...     'city_area': '凤庆县',
+    ...     'street_address': '中关村东路1号'}
+    >>> latinize_address(address)
+    {'country_code': 'CN',
+     'country_area': 'Yunnan Sheng',
+     'city': 'Lincang Shi',
+     'city_area': 'Lincang Shi',
+     'sorting_code': '',
+     'postal_code': '677400',
+     'street_address': '中关村东路1号'}
+
+It will also return expanded names for area types that normally use codes and
+abbreviations such as state names in US:
+
+.. code:: python
+
+    >>> from i18naddress import latinize_address
+    >>> address = {
+    ...     'country_code': 'US',
+    ...     'country_area': 'CA',
+    ...     'postal_code': '94037',
+    ...     'city': 'Mountain View',
+    ...     'street_address': '1600 Charleston Rd.'}
+    >>> latinize_address(address)
+    {'country_code': 'US',
+     'country_area': 'California',
+     'city': 'Mountain View',
+     'city_area': '',
+     'sorting_code': '',
+     'postal_code': '94037',
+     'street_address': '1600 Charleston Rd.'}
+
+
 Address formatting
 ~~~~~~~~~~~~~~~~~~
 
