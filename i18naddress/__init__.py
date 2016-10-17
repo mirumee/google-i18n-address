@@ -2,12 +2,23 @@ from __future__ import unicode_literals
 
 from collections import namedtuple
 import json
+
 import os
 import re
 
 VALID_COUNTRY_CODE = re.compile(r'^\w{2,3}$')
 VALIDATION_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data') 
 VALIDATION_DATA_PATH = os.path.join(VALIDATION_DATA_DIR, '%s.json')
+
+FIELD_MAPPING = {
+    'A': 'street_address',
+    'C': 'city',
+    'D': 'city_area',
+    'N': 'name',
+    'O': 'company_name',
+    'S': 'country_area',
+    'X': 'sorting_code',
+    'Z': 'postal_code'}
 
 
 def load_validation_data(country_code='all'):
@@ -92,16 +103,6 @@ def _load_country_data(country_code):
 def get_validation_rules(address):
     country_code = address.get('country_code', '').upper()
     country_data, database = _load_country_data(country_code)
-
-    FIELD_MAPPING = {
-        'A': 'street_address',
-        'C': 'city',
-        'D': 'city_area',
-        'N': 'name',
-        'O': 'company_name',
-        'S': 'country_area',
-        'X': 'sorting_code',
-        'Z': 'postal_code'}
     country_name = country_data.get('name', '')
     address_format = country_data['fmt']
     address_latin_format = country_data.get('lfmt', address_format)
@@ -247,20 +248,36 @@ def _format_address_line(line_format, address, rules):
         if name in rules.upper_fields:
             value = value.upper()
         return value
-
-    REPLACEMENTS = {
-        '%A': _get_field('street_address'),
-        '%C': _get_field('city'),
-        '%D': _get_field('city_area'),
-        '%N': _get_field('name'),
-        '%O': _get_field('company_name'),
-        '%S': _get_field('country_area'),
-        '%X': _get_field('sorting_code'),
-        '%Z': _get_field('postal_code')}
+    replacements = {'%%%s' % code: _get_field(field_name)
+                    for code, field_name in FIELD_MAPPING.items()}
 
     fields = re.split('(%.)', line_format)
-    fields = [REPLACEMENTS.get(f, f) for f in fields]
+    fields = [replacements.get(f, f) for f in fields]
     return ''.join(fields).strip()
+
+
+def get_fields_order(address, latin=False):
+    """
+    Returns expected order of address form fields as a list of lists.
+    Example for PL:
+    >> get_fields_order({'country_code': 'PL'})
+    >> [[u'name'], [u'company_name'], [u'street_address'], [u'postal_code', u'city']]  # noqa
+    """
+    rules = get_validation_rules(address)
+    address_format = (
+        rules.address_latin_format if latin else rules.address_format)
+    address_lines = address_format.split('%n')
+    replacements = {'%%%s' % code: field_name
+                    for code, field_name in FIELD_MAPPING.items()}
+    all_lines = []
+    for line in address_lines:
+        single_line = []
+        fields = re.split('(%.)', line)
+        for field in fields:
+            single_line.append(replacements.get(field))
+            single_line = filter(None, single_line)
+        all_lines.append(single_line)
+    return all_lines
 
 
 def format_address(address, latin=False):
