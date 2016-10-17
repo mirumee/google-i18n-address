@@ -256,11 +256,11 @@ def _format_address_line(line_format, address, rules):
     return ''.join(fields).strip()
 
 
-def get_fields_order(address, latin=False):
+def get_field_order(address, latin=False):
     """
     Returns expected order of address form fields as a list of lists.
     Example for PL:
-    >> get_fields_order({'country_code': 'PL'})
+    >> get_field_order({'country_code': 'PL'})
     >> [[u'name'], [u'company_name'], [u'street_address'], [u'postal_code', u'city']]  # noqa
     """
     rules = get_validation_rules(address)
