@@ -218,6 +218,19 @@ useful for constructing address forms specific for a particular country:
         postal_code_examples='90000,96199',
         postal_code_prefix=')
 
+All known fields
+----------------
+
+You can use ``KNOWN_FIELDS`` set, to render optional address fields as hidden
+elements of your form:
+
+.. code:: python
+
+   >> from i18naddress import get_validation_rules, KNOWN_FIELDS
+   >> rules = get_validation_rules({'country_code': 'US'})
+   >> KNOWN_FIELDS - rules.allowed_fields
+   {'city_area', 'sorting_code'}
+
 
 Raw Google's i18n data
 ----------------------

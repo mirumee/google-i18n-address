@@ -20,6 +20,8 @@ FIELD_MAPPING = {
     'X': 'sorting_code',
     'Z': 'postal_code'}
 
+KNOWN_FIELDS = set(FIELD_MAPPING.values())
+
 
 def load_validation_data(country_code='all'):
     if not VALID_COUNTRY_CODE.match(country_code):
