@@ -124,7 +124,6 @@ def get_validation_rules(address):
                 re.compile('^' + country_data['zip'] + '$'))
     postal_code_examples = country_data.get('zipex')
 
-    country_area_choices = []
     city_choices = []
     city_area_choices = []
     country_area_type = country_data['state_name_type']
