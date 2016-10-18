@@ -45,6 +45,8 @@ def test_validate_areas_errors(address, errors):
 @pytest.mark.parametrize('address', [
     {'country_code': 'AE', 'country_area': 'Dubai', 'city': 'Dubai',
      'street_address': 'P.O Box 1234'},
+    {'country_code': 'CA', 'country_area': 'QC', 'city': 'Montreal',
+     'postal_code': 'H3Z 2Y7', 'street_address': '10-123 1/2 MAIN STREET NW'},
     {'country_code': 'CH', 'city': 'Zürich', 'postal_code': '8022',
      'street_address': 'Kappelergasse 1'},
     {'country_code': 'CN', 'country_area': '北京市', 'postal_code': '100084',

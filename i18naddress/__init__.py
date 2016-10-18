@@ -261,8 +261,8 @@ def get_field_order(address, latin=False):
     """
     Returns expected order of address form fields as a list of lists.
     Example for PL:
-    >> get_field_order({'country_code': 'PL'})
-    >> [[u'name'], [u'company_name'], [u'street_address'], [u'postal_code', u'city']]  # noqa
+    >>> get_field_order({'country_code': 'PL'})
+    [[u'name'], [u'company_name'], [u'street_address'], [u'postal_code', u'city']]
     """
     rules = get_validation_rules(address)
     address_format = (
@@ -272,11 +272,9 @@ def get_field_order(address, latin=False):
                     for code, field_name in FIELD_MAPPING.items()}
     all_lines = []
     for line in address_lines:
-        single_line = []
         fields = re.split('(%.)', line)
-        for field in fields:
-            single_line.append(replacements.get(field))
-            single_line = filter(None, single_line)
+        single_line = [replacements.get(field) for field in fields]
+        single_line = list(filter(None, single_line))
         all_lines.append(single_line)
     return all_lines
 

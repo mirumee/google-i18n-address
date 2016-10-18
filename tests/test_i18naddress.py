@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 
 import pytest
 
-from i18naddress import get_validation_rules, load_validation_data
+from i18naddress import (
+    get_field_order, get_validation_rules, load_validation_data)
 
 
 def test_invalid_country_code():
@@ -25,6 +26,25 @@ def test_validation_rules_switzerland():
         'company_name', 'city', 'postal_code', 'street_address', 'name'}
     assert validation_data.required_fields == {
         'city', 'postal_code', 'street_address'}
+
+
+def test_field_order_poland():
+    field_order = get_field_order({'country_code': 'PL'})
+    assert field_order == [
+        ['name'],
+        ['company_name'],
+        ['street_address'],
+        ['postal_code', 'city']]
+
+
+def test_field_order_china():
+    field_order = get_field_order({'country_code': 'CN'})
+    assert field_order == [
+        ['postal_code'],
+        ['country_area', 'city', 'city_area'],
+        ['street_address'],
+        ['company_name'],
+        ['name']]
 
 
 @pytest.mark.parametrize('country, levels', [
