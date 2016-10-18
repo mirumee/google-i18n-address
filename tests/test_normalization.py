@@ -129,6 +129,9 @@ def test_address_formatting():
 
 
 def test_address_latinization():
+    address = {}
+    address = latinize_address(address, normalized=True)
+    assert address == {}
     address = {
         'country_code': 'US',
         'country_area': 'CA',
