@@ -20,7 +20,7 @@ FIELD_MAPPING = {
     'X': 'sorting_code',
     'Z': 'postal_code'}
 
-KNOWN_FIELDS = set(FIELD_MAPPING.values())
+KNOWN_FIELDS = set(FIELD_MAPPING.values()) | {'country_code'}
 
 
 def load_validation_data(country_code='all'):
