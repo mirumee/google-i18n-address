@@ -17,19 +17,44 @@ The package also contains a Python interface for address validation.
 Addresses validation
 --------------------
 
-Method ``validate_areas`` returns two objects, first one is a dict with
-errors, second one in tuple with validation data.
+The ``normalize_address`` function checks the address and either returns its
+canonical form (suitable for storage and use in addressing envelopes) or
+raises an ``InvalidAddress`` exception that contains a list of errors.
 
-Errors dict
-~~~~~~~~~~~
+
+Address fields
+~~~~~~~~~~~~~~
+
+Here is the list of recognized fields:
+
+* ``country_code`` is a two-letter ISO 3166-1 country code
+* ``country_area`` is a designation of a region, province or state,
+  recognized values include official names, designated abbreviations,
+  official translations and latin transliterations
+* ``city`` is a city or town name, recognized values include official names,
+  official translations and latin transliterations
+* ``city_area`` is a sublocality like a district, recognized values include
+  official names, official translations and latin transliterations
+* ``street_address`` is the (possibly multiline) street address
+* ``postal_code`` is a postal code or zip code
+* ``sorting_code`` is a sorting code
+* ``name`` is a person's name
+* ``company_name`` is a name of a company or organization
+
+
+Errors
+~~~~~~
 
 Address validation with only country code:
 
 .. code:: python
 
-    >>> from i18naddress import validate_areas
-    >>> errors_dict, validation = validate_areas(country_code='US')
-    >>> errors_dict
+    >>> from i18naddress import InvalidAddress, normalize_address
+    >>> try:
+    ...     address = normalize_address({'country_code': 'US'})
+    ... except InvalidAddress as e:
+    ...     print(e.errors)
+    ...
     {'city': 'required',
      'country_area': 'required',
      'postal_code': 'required',
@@ -39,55 +64,173 @@ With correct address:
 
 .. code:: python
 
-    >>> from i18naddress import validate_areas
-    >>> errors_dict, validation = validate_areas(
-        country_code='US',
-        country_area="CA",
-        city="Mountain View",
-        city_area=None,
-        postal_code="94043",
-        street_address="1600 Amphitheatre Pkwy")
-    >>> errors_dict
-    {}
+    >>> from i18naddress import normalize_address
+    >>> address = normalize_address({
+        'country_code': 'US',
+        'country_area': 'California',
+        'city': 'Mountain View',
+        'postal_code': '94043',
+        'street_address': '1600 Amphitheatre Pkwy'})
+    >>> print(address)
+    {'city': 'MOUNTAIN VIEW',
+     'city_area': '',
+     'country_area': 'CA',
+     'country_code': 'US',
+     'postal_code': '94043',
+     'sorting_code': '',
+     'street_address': '1600 Amphitheatre Pkwy'}
 
-Incorrect postal code for California state:
+Postal code/zip code validation example:
 
 .. code:: python
 
-    >>> from i18naddress import validate_areas
-    >>> errors_dict, validation = validate_areas(
-        country_code='US',
-        country_area="CA",
-        city="Mountain View",
-        city_area=None,
-        postal_code="74043",
-        street_address="1600 Amphitheatre Pkwy")
-    >>> errors_dict
+    >>> from i18naddress import InvalidAddress, normalize_address
+    >>> try:
+    ...     address = normalize_address({
+    ...         'country_code': 'US',
+    ...         'country_area': 'California',
+    ...         'city': 'Mountain View',
+    ...         'postal_code': '74043',
+    ...         'street_address': '1600 Amphitheatre Pkwy'})
+    ... except InvalidAddress as e:
+    ...     print(e.errors)
+    ...
     {'postal_code': 'invalid'}
 
-Validation tuple
-~~~~~~~~~~~~~~~~
 
-Second returned value is ``namedtuple`` with keys: ``require``,
-``country_area_keys``, ``country_area_choices``, ``city_keys``,
-``city_choices``, ``city_area_keys``, ``city_area_choices``,
-``postal_code_regexp``, ``postal_code_example``.
+Address latinization
+~~~~~~~~~~~~~~~~~~~~
+
+In some cases it may be useful to display foreign addresses in a more
+accessible format. You can use the ``latinize_address`` function to obtain
+a more verbose, latinized version of an address.
+
+This version is suitable for display and useful for full text search indexing
+but the normalized form is what should be stored in the database and used when
+printing address labels.
 
 .. code:: python
 
-    >>> from i18naddress import validate_areas
-    >>> errors_dict, validation = validate_areas(country_code='US')
-    >>> validation
-    ValidationData(
-     require=('street_address', 'city', 'country_area', 'postal_code'),
-     country_area_keys=['AL', ... 'WY'],
-     country_area_choices=[('AL', 'Alabama'), ... ('WY', 'Wyoming')],
-     city_keys=None,
-     city_choices=None,
-     city_area_keys=None,
-     city_area_choices=None,
-     postal_code_regexp=re.compile('(\\d{5})(?:[ \\-](\\d{4}))?'),
-     postal_code_example='95014,22162-1010')
+    >>> from i18naddress import latinize_address
+    >>> address = {
+    ...     'country_code': 'CN',
+    ...     'country_area': '云南省',
+    ...     'postal_code': '677400',
+    ...     'city': '临沧市',
+    ...     'city_area': '凤庆县',
+    ...     'street_address': '中关村东路1号'}
+    >>> latinize_address(address)
+    {'country_code': 'CN',
+     'country_area': 'Yunnan Sheng',
+     'city': 'Lincang Shi',
+     'city_area': 'Lincang Shi',
+     'sorting_code': '',
+     'postal_code': '677400',
+     'street_address': '中关村东路1号'}
+
+It will also return expanded names for area types that normally use codes and
+abbreviations such as state names in US:
+
+.. code:: python
+
+    >>> from i18naddress import latinize_address
+    >>> address = {
+    ...     'country_code': 'US',
+    ...     'country_area': 'CA',
+    ...     'postal_code': '94037',
+    ...     'city': 'Mountain View',
+    ...     'street_address': '1600 Charleston Rd.'}
+    >>> latinize_address(address)
+    {'country_code': 'US',
+     'country_area': 'California',
+     'city': 'Mountain View',
+     'city_area': '',
+     'sorting_code': '',
+     'postal_code': '94037',
+     'street_address': '1600 Charleston Rd.'}
+
+
+Address formatting
+~~~~~~~~~~~~~~~~~~
+
+You can use the ``format_address`` function to format the address following
+the destination country's post office regulations:
+
+.. code:: python
+
+    >>> address = {
+    ...     'country_code': 'CN',
+    ...     'country_area': '云南省',
+    ...     'postal_code': '677400',
+    ...     'city': '临沧市',
+    ...     'city_area': '凤庆县',
+    ...     'street_address': '中关村东路1号'}
+    >>>> print(format_address(address))
+    677400
+    云南省临沧市凤庆县
+    中关村东路1号
+    CHINA
+
+You can also ask for a latin-friendly version:
+
+.. code:: python
+
+    >>> address = {
+    ...     'country_code': 'CN',
+    ...     'country_area': '云南省',
+    ...     'postal_code': '677400',
+    ...     'city': '临沧市',
+    ...     'city_area': '凤庆县',
+    ...     'street_address': '中关村东路1号'}
+    >>> print(format_address(address, latin=True))
+    中关村东路1号
+    凤庆县
+    临沧市
+    云南省, 677400
+    CHINA
+
+
+Validation rules
+~~~~~~~~~~~~~~~~
+
+You can use the ``get_validation_rules`` function to obtain validation data
+useful for constructing address forms specific for a particular country:
+
+.. code:: python
+
+    >>> from i18naddress import get_validation_rules
+    >>> get_validation_rules({'country_code': 'US', 'country_area': 'CA'})
+    ValidationRules(
+        country_name='UNITED STATES',
+        address_format='%N%n%O%n%A%n%C, %S %Z',
+        address_latin_format='%N%n%O%n%A%n%C, %S %Z',
+        allowed_fields={'street_address', 'company_name', 'city', 'name', 'country_area', 'postal_code'},
+        required_fields={'street_address', 'city', 'country_area', 'postal_code'},
+        upper_fields={'city', 'country_area'},
+        country_area_type='state',
+        country_area_choices=[('AL', 'Alabama'), ..., ('WY', 'Wyoming')],
+        city_type='city',
+        city_choices=[],
+        city_area_type='suburb',
+        city_area_choices=[],
+        postal_code_type='zip',
+        postal_code_matchers=[re.compile('^(\\d{5})(?:[ \\-](\\d{4}))?$'), re.compile('^9[0-5]|96[01]')],
+        postal_code_examples='90000,96199',
+        postal_code_prefix=')
+
+All known fields
+----------------
+
+You can use ``KNOWN_FIELDS`` set, to render optional address fields as hidden
+elements of your form:
+
+.. code:: python
+
+   >> from i18naddress import get_validation_rules, KNOWN_FIELDS
+   >> rules = get_validation_rules({'country_code': 'US'})
+   >> KNOWN_FIELDS - rules.allowed_fields
+   {'city_area', 'sorting_code'}
+
 
 Raw Google's i18n data
 ----------------------
@@ -116,7 +259,7 @@ All raw data are stored in ``I18nCountryData`` dict like object:
      'zip': '(\\d{5})(?:[ \\-](\\d{4}))?',
      'zip_name_type': 'zip',
      'zipex': '95014,22162-1010'}
-    >>> i18n_country_data['US', 'CA']
+    >>> i18n_country_data['US/CA']
     {'id': 'data/US/CA',
      'key': 'CA',
      'lang': 'en',
@@ -124,83 +267,56 @@ All raw data are stored in ``I18nCountryData`` dict like object:
      'zip': '9[0-5]|96[01]',
      'zipex': '90000,96199'}
 
+
 Used with Django form
 ---------------------
 
+Django forms will return only required address fields in ``form.cleaned_data`` dict. So addresses in the database will be normalized.
+
 .. code:: python
 
-    from collections import defaultdict
-
-    from i18naddress import validate_areas
     from django import forms
-    from django.utils.translation import ugettext as _
+
+    from i18naddress import InvalidAddress, normalize_address, get_validation_rules
 
 
     class AddressForm(forms.Form):
 
         COUNTRY_CHOICES = [
-            ('CN', 'China'),
+            ('PL', 'Poland'),
+            ('AE', 'United Arab Emirates'),
             ('US', 'United States of America')]
+        
+        ERROR_MESSAGES = {
+            'required': 'This field is required',
+            'invalid': 'Enter a valid name'}
 
         name = forms.CharField(required=True)
         company_name = forms.CharField(required=False)
-        address = forms.CharField(required=False)
+        street_address = forms.CharField(required=False)
         city = forms.CharField(required=False)
         city_area = forms.CharField(required=False)
-        country = forms.ChoiceField(required=True, choices=COUNTRY_CHOICES)
+        country_code = forms.ChoiceField(required=True, choices=COUNTRY_CHOICES)
         country_area = forms.CharField(required=False)
         postal_code = forms.CharField(required=False)
 
         def clean(self):
             clean_data = super(AddressForm, self).clean()
-            if 'country' in clean_data:
-                self.validate_areas(
-                    clean_data['country'], clean_data.get('country_area'),
-                    clean_data.get('city'), clean_data.get('city_area'),
-                    clean_data.get('postal_code'),
-                    clean_data.get('address'))
-            return clean_data
-
-        def validate_areas(self, country_code, country_area,
-                           city, city_area, postal_code, street_address):
-            error_messages = defaultdict(
-                lambda: _('Invalid value'), self.fields['country'].error_messages)
-            errors, validation = validate_areas(
-                country_code, country_area, city,
-                city_area, postal_code, street_address)
-
-            if 'country' in errors:
-                self.add_error('country', _(
-                    '%s is not supported country code.' % country_code))
-            if 'street_address' in errors:
-                error = error_messages[errors['street_address']] % {
-                    'value': street_address}
-                self.add_error('street_address_1', error)
-            if 'city' in errors:
-                error = error_messages[errors['city']] % {
-                    'value': city}
-                self.add_error('city', error)
-            if 'city_area' in errors:
-                error = error_messages[errors['city_area']] % {
-                    'value': city_area}
-                self.add_error('city_area', error)
-            if 'country_area' in errors:
-                error = error_messages[errors['country_area']] % {
-                    'value': country_area}
-                self.add_error('country_area', error)
-            if 'postal_code' in errors:
-                if errors['postal_code'] == 'invalid':
-                    postal_code_example = validation.postal_code_example
-                    if postal_code_example:
-                        error = _(
-                            'Invalid postal code. Ex. %(example)s') % {
-                                        'example': postal_code_example}
+            validation_rules = get_validation_rules(clean_data)
+            try:
+                valid_address = normalize_address(clean_data)
+            except InvalidAddress as e:
+                errors = e.errors
+                valid_address = None
+                for field, error_code in errors.items():
+                    if field == 'postal_code':
+                        examples = validation_rules.postal_code_examples
+                        msg = 'Invalid value, use fomat like %s' % examples
                     else:
-                        error = _('Invalid postal code.')
-                else:
-                    error = error_messages[errors['postal_code']] % {
-                        'value': postal_code}
-                self.add_error('postal_code', error)
+                        msg = ERROR_MESSAGES[error_code]
+                        self.add_error(field, msg)
+            return valid_address or clean_data
+
 
 .. image:: https://ga-beacon.appspot.com/UA-10159761-14/mirumee/google-i18n-address?pixel
 

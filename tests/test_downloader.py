@@ -3,14 +3,13 @@ from __future__ import unicode_literals
 import json
 import os
 
+from i18naddress.downloader import download, process
 import pytest
 
 try:
     from unittest import mock
 except ImportError:
     import mock
-
-from i18naddress.downloader import download, process
 
 
 @pytest.fixture(autouse=True)
@@ -20,11 +19,13 @@ def patch_i18n_country_data(monkeypatch, tmpdir):
     data_dir = tmpdir.join('data')
     monkeypatch.setattr('i18naddress.downloader.ThreadPool', mock.MagicMock())
     monkeypatch.setattr('i18naddress.downloader.work_queue', mock.MagicMock())
-    monkeypatch.setattr('i18naddress.downloader.get_countries', lambda: all_countries)
     monkeypatch.setattr(
-        'i18naddress.downloader.COUNTRIES_VALIDATION_DATA_DIR', str(data_dir))
+        'i18naddress.downloader.get_countries', lambda: all_countries)
     monkeypatch.setattr(
-        'i18naddress.downloader.COUNTRY_PATH', os.path.join(str(data_dir), '%s.json'))
+        'i18naddress.downloader.VALIDATION_DATA_DIR', str(data_dir))
+    monkeypatch.setattr(
+        'i18naddress.downloader.DATA_PATH',
+        os.path.join(str(data_dir), '%s.json'))
     manager = mock.MagicMock()
     manager.dict.return_value = manager_dict
     monkeypatch.setattr('i18naddress.downloader.manager', manager)
@@ -49,19 +50,23 @@ def test_downloader_country(tmpdir, country, file_names, data):
 def test_downloader_invalid_country():
     with pytest.raises(ValueError):
         download('XX')
-    
+
 
 @pytest.mark.parametrize('fetched_data, country, calls', [
     ({'lang': 'de', 'name': 'SWITZERLAND', 'languages': 'de~fr',
       'sub_keys': 'AG~AR', 'sub_names': 'Aargau~Appenzell Ausserrhoden'},
-     'CH', (mock.call('CH--fr'), mock.call('CH/AG'), mock.call('CH/AR'))),
+     'CH',
+     [mock.call(('CH', 'fr')),
+      mock.call(('CH/AG', None)),
+      mock.call(('CH/AR', None))]),
     ({'lang': 'de', 'name': 'GERMANY'}, 'CH', ())])
 def test_process(monkeypatch, fetched_data, country, calls):
     work_queue_put = mock.Mock(return_value=None)
     monkeypatch.setattr('i18naddress.downloader.work_queue.put', work_queue_put)
     monkeypatch.setattr('i18naddress.downloader.fetch', lambda url: fetched_data)
-    data = process(country)
+    key, data = process(country, None)
     work_queue_put.assert_has_calls(calls)
+    assert key == 'CH'
     assert data == fetched_data
 
 
