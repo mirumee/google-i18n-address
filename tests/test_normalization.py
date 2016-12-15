@@ -128,6 +128,16 @@ def test_address_formatting():
         'CHINA')
 
 
+def test_capitalization():
+    address = normalize_address({
+        'country_code': 'GB',
+        'postal_code': 'sw1a 0aa',
+        'city': 'London',
+        'street_address': 'Westminster'})
+    assert address['city'] == 'LONDON'
+    assert address['postal_code'] == 'SW1A 0AA'
+
+
 def test_address_latinization():
     address = {}
     address = latinize_address(address, normalized=True)

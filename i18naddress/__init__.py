@@ -191,6 +191,9 @@ class InvalidAddress(ValueError):
 
 def _normalize_field(name, rules, data, choices, errors):
     value = data.get(name)
+    if name in rules.upper_fields and value is not None:
+        value = value.upper()
+        data[name] = value
     if name not in rules.allowed_fields:
         data[name] = ''
     elif not value and name in rules.required_fields:
@@ -227,7 +230,7 @@ def normalize_address(address):
             'city_area', rules, cleaned_data, rules.city_area_choices, errors)
         _normalize_field(
             'postal_code', rules, cleaned_data, [], errors)
-        postal_code = address.get('postal_code', '')
+        postal_code = cleaned_data.get('postal_code', '')
         if rules.postal_code_matchers and postal_code:
             for matcher in rules.postal_code_matchers:
                 if not matcher.match(postal_code):
