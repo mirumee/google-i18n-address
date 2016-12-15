@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from collections import namedtuple
 import json
 
+import io
 import os
 import re
 
@@ -32,7 +33,7 @@ def load_validation_data(country_code='all'):
     if not os.path.exists(path):
         raise ValueError(
             '%r is not a valid country code' % (country_code,))
-    with open(path) as data:
+    with io.open(path, encoding='utf-8') as data:
         return json.load(data)
 
 
