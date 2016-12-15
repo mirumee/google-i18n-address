@@ -105,7 +105,6 @@ def test_localization_handling():
         'postal_code': '123456',
         'sorting_code': '654321',
         'street_address': 'P.O Box 1234'})
-    print(address)
     assert address['country_area'] == 'إمارة دبيّ'
     assert address['city'] == ''
     assert address['postal_code'] == ''
@@ -126,6 +125,16 @@ def test_address_formatting():
         '云南省临沧市凤庆县\n'
         '中关村东路1号\n'
         'CHINA')
+
+
+def test_capitalization():
+    address = normalize_address({
+        'country_code': 'GB',
+        'postal_code': 'sw1a 0aa',
+        'city': 'London',
+        'street_address': 'Westminster'})
+    assert address['city'] == 'LONDON'
+    assert address['postal_code'] == 'SW1A 0AA'
 
 
 def test_address_latinization():
