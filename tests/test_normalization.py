@@ -105,7 +105,6 @@ def test_localization_handling():
         'postal_code': '123456',
         'sorting_code': '654321',
         'street_address': 'P.O Box 1234'})
-    print(address)
     assert address['country_area'] == 'إمارة دبيّ'
     assert address['city'] == ''
     assert address['postal_code'] == ''
