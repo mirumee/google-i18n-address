@@ -1,8 +1,9 @@
 #! /usr/bin/env python
+import io
 import logging
+import sys
 from setuptools import setup, find_packages, Command
 from setuptools.command.test import test as TestCommand
-import sys
 
 
 class PyTest(TestCommand):
@@ -46,7 +47,7 @@ class DownloadJSONFiles(Command):
 
 
 def get_long_description():
-    with open('README.rst') as readme_file:
+    with io.open('README.rst', encoding='utf-8') as readme_file:
         readme = readme_file.read()
     # add GitHub badge in PyPi
     return readme.replace(
