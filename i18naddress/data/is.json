@@ -1,1 +1,1 @@
-{"IS": {"fmt": "%N%n%O%n%A%n%Z %C", "id": "data/IS", "key": "IS", "name": "ICELAND", "posturl": "http://www.postur.is/cgi-bin/hsrun.exe/Distributed/vefur/vefur.htx;start=HS_landakort_postnumer", "zip": "\\d{3}", "zipex": "320,121,220,110"}}
+{"IS": {"fmt": "%N%n%O%n%A%n%Z %C", "id": "data/IS", "key": "IS", "name": "ICELAND", "posturl": "https://www.postur.is/um-postinn/posthus/gotuskra/", "zip": "\\d{3}", "zipex": "320,121,220,110"}}
