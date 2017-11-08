@@ -314,7 +314,7 @@ Django forms will return only required address fields in ``form.cleaned_data`` d
                         msg = 'Invalid value, use fomat like %s' % examples
                     else:
                         msg = ERROR_MESSAGES[error_code]
-                        self.add_error(field, msg)
+                    self.add_error(field, msg)
             return valid_address or clean_data
 
 
