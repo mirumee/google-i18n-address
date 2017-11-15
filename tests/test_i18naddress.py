@@ -20,6 +20,31 @@ def test_dictionary_access():
     assert state['name'] == 'Nevada'
 
 
+def test_validation_rules_canada():
+    validation_data = get_validation_rules({'country_code': 'CA'})
+    assert validation_data.country_area_choices == [
+        ('AB', 'Alberta'),
+        ('BC', 'British Columbia'),
+        ('BC', 'Colombie-Britannique'),
+        ('MB', 'Manitoba'),
+        ('NB', 'New Brunswick'),
+        ('NB', 'Nouveau-Brunswick'),
+        ('NL', 'Newfoundland and Labrador'),
+        ('NL', 'Terre-Neuve-et-Labrador'),
+        ('NT', 'Northwest Territories'),
+        ('NT', 'Territoires du Nord-Ouest'),
+        ('NS', 'Nouvelle-Écosse'),
+        ('NS', 'Nova Scotia'),
+        ('NU', 'Nunavut'),
+        ('ON', 'Ontario'),
+        ('PE', 'Prince Edward Island'),
+        ('PE', 'Île-du-Prince-Édouard'),
+        ('QC', 'Quebec'),
+        ('QC', 'Québec'),
+        ('SK', 'Saskatchewan'),
+        ('YT', 'Yukon')]
+
+
 def test_validation_rules_switzerland():
     validation_data = get_validation_rules({'country_code': 'CH'})
     assert validation_data.allowed_fields == {
