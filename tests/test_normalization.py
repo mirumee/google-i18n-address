@@ -150,6 +150,22 @@ def test_address_latinization():
     address = latinize_address(address)
     assert address['country_area'] == 'California'
     address = {
+        'country_code': 'CN',
+        'country_area': '云南省',
+        'postal_code': '677400',
+        'city': '临沧市',
+        'city_area': '凤庆县',
+        'street_address': '中关村东路1号'}
+    address = latinize_address(address)
+    assert address == {
+        'country_code': 'CN',
+        'country_area': 'Yunnan Sheng',
+        'postal_code': '677400',
+        'city': 'Lincang Shi',
+        'city_area': 'Fengqing Xian',
+        'street_address': '中关村东路1号',
+        'sorting_code': ''}
+    address = {
         'name': 'Zhang San',
         'company_name': 'Beijing Kid Toy Company',
         'country_code': 'CN',

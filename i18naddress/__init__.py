@@ -1,11 +1,10 @@
 from __future__ import unicode_literals
 
-from collections import namedtuple
-import json
-
 import io
+import json
 import os
 import re
+from collections import defaultdict, namedtuple
 
 VALID_COUNTRY_CODE = re.compile(r'^\w{2,3}$')
 VALIDATION_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data') 
@@ -80,6 +79,16 @@ def _make_choices(rules, translated=False):
     return choices
 
 
+def _compact_choices(choices, keys):
+    values = defaultdict(set)
+    for key, value in choices:
+        values[key].add(value)
+    return [
+        (key, value)
+        for key in keys
+        for value in sorted(values[key])]
+
+
 def _match_choices(value, choices):
     if value:
         value = value.strip().lower()
@@ -133,14 +142,20 @@ def get_validation_rules(address):
     postal_code_type = country_data['zip_name_type']
     postal_code_prefix = country_data.get('postprefix', '')
     # second level of data is for administrative areas
-    country_area_choices = _make_choices(country_data)
-    for language in languages:
-        localized_country_data = database['%s--%s' % (
-            country_code, language)]
-        country_area_choices += _make_choices(
-            localized_country_data, translated=True)
-    country_area = _match_choices(
-        address.get('country_area'), country_area_choices)
+    country_area = None
+    country_area_choices = []
+    if 'sub_keys' in country_data:
+        country_area_keys = country_data['sub_keys'].split('~')
+        country_area_choices = _make_choices(country_data)
+        for language in languages:
+            localized_country_data = database[
+                '%s--%s' % (country_code, language)]
+            country_area_choices += _make_choices(
+                localized_country_data, translated=True)
+        country_area_choices = _compact_choices(
+            country_area_choices, country_area_keys)
+        country_area = _match_choices(
+            address.get('country_area'), country_area_choices)
     if country_area:
         # third level of data is for cities
         country_area_data = database['%s/%s' % (
@@ -150,14 +165,20 @@ def get_validation_rules(address):
                 re.compile('^' + country_area_data['zip']))
         if 'zipex' in country_area_data:
             postal_code_examples = country_area_data['zipex']
-        city_choices = _make_choices(country_area_data)
-        for language in languages:
-            localized_country_area_data = database['%s/%s--%s' % (
-                country_code, country_area, language)]
-            city_choices += _make_choices(
-                localized_country_area_data, translated=True)
-        city = _match_choices(
-            address.get('city'), city_choices)
+        city = None
+        city_choices = []
+        if 'sub_keys' in country_area_data:
+            city_keys = country_area_data['sub_keys'].split('~')
+            city_choices = _make_choices(country_area_data)
+            for language in languages:
+                localized_country_area_data = database['%s/%s--%s' % (
+                    country_code, country_area, language)]
+                city_choices += _make_choices(
+                    localized_country_area_data, translated=True)
+            city_choices = _compact_choices(
+                city_choices, city_keys)
+            city = _match_choices(
+                address.get('city'), city_choices)
         if city:
             # fourth level of data is for dependent sublocalities
             city_data = database['%s/%s/%s' % (
@@ -167,12 +188,17 @@ def get_validation_rules(address):
                     re.compile('^' + city_data['zip']))
             if 'zipex' in city_data:
                 postal_code_examples = city_data['zipex']
-            city_area_choices = _make_choices(city_data)
-            for language in languages:
-                localized_city_data = database['%s/%s/%s--%s' % (
-                    country_code, country_area, city, language)]
-                city_area_choices += _make_choices(
-                    localized_city_data, translated=True)
+            city_area_choices = []
+            if 'sub_keys' in city_data:
+                city_area_keys = city_data['sub_keys'].split('~')
+                city_area_choices = _make_choices(city_data)
+                for language in languages:
+                    localized_city_data = database['%s/%s/%s--%s' % (
+                        country_code, country_area, city, language)]
+                    city_area_choices += _make_choices(
+                        localized_city_data, translated=True)
+                city_area_choices = _compact_choices(
+                    city_area_choices, city_area_keys)
     return ValidationRules(
         country_name,
         address_format, address_latin_format,
@@ -323,7 +349,7 @@ def latinize_address(address, normalized=False):
                         country_code, country_area, city, city_area)
                     city_area_data = database.get(key)
                     if city_area_data:
-                        cleaned_data['city_area'] = city_data.get(
+                        cleaned_data['city_area'] = city_area_data.get(
                             'lname',
                             city_area_data.get('name', city_area))
     return cleaned_data
