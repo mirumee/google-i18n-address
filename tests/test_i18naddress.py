@@ -22,6 +22,7 @@ def test_dictionary_access():
 
 def test_validation_rules_canada():
     validation_data = get_validation_rules({'country_code': 'CA'})
+    assert validation_data.country_code == 'CA'
     assert validation_data.country_area_choices == [
         ('AB', 'Alberta'),
         ('BC', 'British Columbia'),

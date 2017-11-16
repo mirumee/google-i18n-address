@@ -201,6 +201,7 @@ useful for constructing address forms specific for a particular country:
     >>> from i18naddress import get_validation_rules
     >>> get_validation_rules({'country_code': 'US', 'country_area': 'CA'})
     ValidationRules(
+        country_code='US',
         country_name='UNITED STATES',
         address_format='%N%n%O%n%A%n%C, %S %Z',
         address_latin_format='%N%n%O%n%A%n%C, %S %Z',
@@ -215,8 +216,8 @@ useful for constructing address forms specific for a particular country:
         city_area_choices=[],
         postal_code_type='zip',
         postal_code_matchers=[re.compile('^(\\d{5})(?:[ \\-](\\d{4}))?$'), re.compile('^9[0-5]|96[01]')],
-        postal_code_examples='90000,96199',
-        postal_code_prefix=')
+        postal_code_examples=['90000', '96199'],
+        postal_code_prefix='')
 
 All known fields
 ----------------
