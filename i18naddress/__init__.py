@@ -4,10 +4,10 @@ import io
 import json
 import os
 import re
-from collections import defaultdict, namedtuple
+from collections import defaultdict
 
 VALID_COUNTRY_CODE = re.compile(r'^\w{2,3}$')
-VALIDATION_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data') 
+VALIDATION_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 VALIDATION_DATA_PATH = os.path.join(VALIDATION_DATA_DIR, '%s.json')
 
 FIELD_MAPPING = {
