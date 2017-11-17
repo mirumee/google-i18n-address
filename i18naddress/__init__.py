@@ -4,10 +4,10 @@ import io
 import json
 import os
 import re
-from collections import defaultdict, namedtuple
+from collections import defaultdict
 
 VALID_COUNTRY_CODE = re.compile(r'^\w{2,3}$')
-VALIDATION_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data') 
+VALIDATION_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 VALIDATION_DATA_PATH = os.path.join(VALIDATION_DATA_DIR, '%s.json')
 
 FIELD_MAPPING = {
@@ -36,16 +36,88 @@ def load_validation_data(country_code='all'):
         return json.load(data)
 
 
-ValidationRules = namedtuple(
-    'ValidationRules', [
+class ValidationRules(object):
+    __slots__ = [
+        'country_code',
         'country_name',
-        'address_format', 'address_latin_format',
-        'allowed_fields', 'required_fields', 'upper_fields',
-        'country_area_type', 'country_area_choices',
-        'city_type', 'city_choices',
-        'city_area_type', 'city_area_choices',
-        'postal_code_type', 'postal_code_matchers', 'postal_code_examples',
-        'postal_code_prefix'])
+        'address_format',
+        'address_latin_format',
+        'allowed_fields',
+        'required_fields',
+        'upper_fields',
+        'country_area_type',
+        'country_area_choices',
+        'city_type',
+        'city_choices',
+        'city_area_type',
+        'city_area_choices',
+        'postal_code_type',
+        'postal_code_matchers',
+        'postal_code_examples',
+        'postal_code_prefix']
+
+    def __init__(
+            self, country_code, country_name, address_format,
+            address_latin_format, allowed_fields, required_fields,
+            upper_fields, country_area_type, country_area_choices,
+            city_type, city_choices, city_area_type, city_area_choices,
+            postal_code_type, postal_code_matchers, postal_code_examples,
+            postal_code_prefix):
+        self.country_code = country_code
+        self.country_name = country_name
+        self.address_format = address_format
+        self.address_latin_format = address_latin_format
+        self.allowed_fields = allowed_fields
+        self.required_fields = required_fields
+        self.upper_fields = upper_fields
+        self.country_area_type = country_area_type
+        self.country_area_choices = country_area_choices
+        self.city_type = city_type
+        self.city_choices = city_choices
+        self.city_area_type = city_area_type
+        self.city_area_choices = city_area_choices
+        self.postal_code_type = postal_code_type
+        self.postal_code_matchers = postal_code_matchers
+        self.postal_code_examples = postal_code_examples
+        self.postal_code_prefix = postal_code_prefix
+
+    def __repr__(self):
+        return (
+            'ValidationRules('
+            'country_code=%r, '
+            'country_name=%r, '
+            'address_format=%r, '
+            'address_latin_format=%r, '
+            'allowed_fields=%r, '
+            'required_fields=%r, '
+            'upper_fields=%r, '
+            'country_area_type=%r, '
+            'country_area_choices=%r, '
+            'city_type=%r, '
+            'city_choices=%r, '
+            'city_area_type=%r, '
+            'city_area_choices=%r, '
+            'postal_code_type=%r, '
+            'postal_code_matchers=%r, '
+            'postal_code_examples=%r, '
+            'postal_code_prefix=%r)' % (
+                self.country_code,
+                self.country_name,
+                self.address_format,
+                self.address_latin_format,
+                self.allowed_fields,
+                self.required_fields,
+                self.upper_fields,
+                self.country_area_type,
+                self.country_area_choices,
+                self.city_type,
+                self.city_choices,
+                self.city_area_type,
+                self.city_area_choices,
+                self.postal_code_type,
+                self.postal_code_matchers,
+                self.postal_code_examples,
+                self.postal_code_prefix))
 
 
 def _make_choices(rules, translated=False):
@@ -132,7 +204,9 @@ def get_validation_rules(address):
         if 'zip' in country_data:
             postal_code_matchers.append(
                 re.compile('^' + country_data['zip'] + '$'))
-    postal_code_examples = country_data.get('zipex')
+    postal_code_examples = []
+    if 'zipex' in country_data:
+        postal_code_examples = country_data['zipex'].split(',')
 
     city_choices = []
     city_area_choices = []
@@ -164,7 +238,7 @@ def get_validation_rules(address):
             postal_code_matchers.append(
                 re.compile('^' + country_area_data['zip']))
         if 'zipex' in country_area_data:
-            postal_code_examples = country_area_data['zipex']
+            postal_code_examples = country_area_data['zipex'].split(',')
         city = None
         city_choices = []
         if 'sub_keys' in country_area_data:
@@ -187,7 +261,7 @@ def get_validation_rules(address):
                 postal_code_matchers.append(
                     re.compile('^' + city_data['zip']))
             if 'zipex' in city_data:
-                postal_code_examples = city_data['zipex']
+                postal_code_examples = city_data['zipex'].split(',')
             city_area_choices = []
             if 'sub_keys' in city_data:
                 city_area_keys = city_data['sub_keys'].split('~')
@@ -200,7 +274,7 @@ def get_validation_rules(address):
                 city_area_choices = _compact_choices(
                     city_area_choices, city_area_keys)
     return ValidationRules(
-        country_name,
+        country_code, country_name,
         address_format, address_latin_format,
         allowed_fields, required_fields, upper_fields,
         country_area_type, country_area_choices,
