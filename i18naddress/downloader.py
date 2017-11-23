@@ -11,7 +11,7 @@ import requests
 
 from . import VALIDATION_DATA_DIR
 
-MAIN_URL = 'http://i18napis.appspot.com/address/data'
+MAIN_URL = 'https://chromium-i18n.appspot.com/ssl-address/data'
 DATA_PATH = os.path.join(VALIDATION_DATA_DIR, '%s.json')
 
 logger = logging.getLogger(__name__)
