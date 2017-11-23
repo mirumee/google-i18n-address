@@ -4,7 +4,7 @@ Google i18n address
 |codecov.io| |Circle CI| |PyPi downloads| |requires.io| |PyPi version| |PyPi pythons|
 
 This package contains a copy of `Google's i18n
-address <http://i18napis.appspot.com/address>`_ metadata repository
+address <https://chromium-i18n.appspot.com/ssl-address>`_ metadata repository
 that contains great data but comes with no uptime guarantees.
 
 Contents of this package will allow you to programatically build address
