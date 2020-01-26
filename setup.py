@@ -63,7 +63,7 @@ setup(
     license='BSD',
     version='2.3.5',
     url='https://github.com/mirumee/google-i18n-address',
-    packages=find_packages(),
+    packages=find_packages(exclude=["tests"]),
     include_package_data=True,
     install_requires=['requests>=2.7.0'],
     tests_require=['mock', 'pytest-cov', 'pytest'],
