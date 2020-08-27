@@ -233,15 +233,15 @@ elements of your form:
    {'city_area', 'sorting_code'}
 
 
-Raw Google's i18n data
-----------------------
+Raw i18n data
+-------------
 
-All raw data are stored in ``I18nCountryData`` dict like object:
+Raw data is stored in a dict:
 
 .. code:: python
 
-    >>> from i18naddress import I18nCountryData
-    >>> i18n_country_data = I18nCountryData()
+    >>> from i18naddress import load_validation_data
+    >>> i18n_country_data = load_validation_data()
     >>> i18n_country_data['US']
     {'fmt': '%N%n%O%n%A%n%C, %S %Z',
      'id': 'data/US',
