@@ -312,7 +312,7 @@ Django forms will return only required address fields in ``form.cleaned_data`` d
                 for field, error_code in errors.items():
                     if field == 'postal_code':
                         examples = validation_rules.postal_code_examples
-                        msg = 'Invalid value, use fomat like %s' % examples
+                        msg = 'Invalid value, use format like %s' % examples
                     else:
                         msg = ERROR_MESSAGES[error_code]
                     self.add_error(field, msg)
