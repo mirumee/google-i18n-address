@@ -48,7 +48,7 @@ class DownloadJSONFiles(Command):
 
 def get_long_description():
     with io.open('README.rst', encoding='utf-8') as readme_file:
-        readme = readme_file.read()
+        readme = readme_file.read().replace("%", "%%")
     # add GitHub badge in PyPi
     return readme.replace(
         '|codecov.io| |Circle CI| |PyPi downloads| |requires.io| |PyPi version| |PyPi pythons|', #  noqa
