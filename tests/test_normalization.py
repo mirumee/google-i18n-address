@@ -36,6 +36,13 @@ from i18naddress import (
     ({'country_code': 'ZZ'},
      {'country_code': 'invalid'})])
 def test_validate_areas_errors(address, errors):
+    """
+    Check if the given address is valid.
+
+    Args:
+        address: (str): write your description
+        errors: (todo): write your description
+    """
     with pytest.raises(InvalidAddress) as excinfo:
         normalize_address(address)
     assert excinfo.value.errors == errors
@@ -71,10 +78,21 @@ def test_validate_areas_errors(address, errors):
      'postal_code': '94037', 'city': 'Mountain View',
      'street_address': '1600 Charleston Rd.'}])
 def test_validate_known_addresses(address):
+    """
+    Check if the given address is a valid.
+
+    Args:
+        address: (str): write your description
+    """
     assert normalize_address(address)
 
 
 def test_localization_handling():
+    """
+    Handles localization.
+
+    Args:
+    """
     address = normalize_address({
         'country_code': 'us',
         'country_area': 'California',
@@ -111,6 +129,11 @@ def test_localization_handling():
 
 
 def test_address_formatting():
+    """
+    Returns the test format.
+
+    Args:
+    """
     address = {
         'country_code': 'CN',
         'country_area': '云南省',
@@ -127,6 +150,11 @@ def test_address_formatting():
 
 
 def test_capitalization():
+    """
+    Normalize the test address.
+
+    Args:
+    """
     address = normalize_address({
         'country_code': 'GB',
         'postal_code': 'sw1a 0aa',
@@ -137,6 +165,11 @@ def test_capitalization():
 
 
 def test_address_latinization():
+    """
+    Test if latin of the latin.
+
+    Args:
+    """
     address = {}
     address = latinize_address(address, normalized=True)
     assert address == {}

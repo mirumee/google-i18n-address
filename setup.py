@@ -11,15 +11,33 @@ class PyTest(TestCommand):
     test_args = []
 
     def initialize_options(self):
+        """
+        Initialize pytest_args.
+
+        Args:
+            self: (todo): write your description
+        """
         TestCommand.initialize_options(self)
         self.pytest_args = []
 
     def finalize_options(self):
+        """
+        Finalize options.
+
+        Args:
+            self: (todo): write your description
+        """
         TestCommand.finalize_options(self)
         self.test_args = []
         self.test_suite = True
 
     def run_tests(self):
+        """
+        Run test.
+
+        Args:
+            self: (todo): write your description
+        """
         # import here, cause outside the eggs aren't loaded
         import pytest
         errno = pytest.main(self.pytest_args)
@@ -34,19 +52,42 @@ class DownloadJSONFiles(Command):
     logger = None
 
     def initialize_options(self):
+        """
+        Initialize the options.
+
+        Args:
+            self: (todo): write your description
+        """
         logging.basicConfig()
         self.logger = logging.getLogger('i18naddress.downloader')
         self.logger.setLevel(logging.DEBUG)
 
     def finalize_options(self):
+        """
+        Finalize options. options. options.
+
+        Args:
+            self: (todo): write your description
+        """
         pass
 
     def run(self):
+        """
+        Runs the address
+
+        Args:
+            self: (todo): write your description
+        """
         from i18naddress.downloader import download
         download(country=self.country)
 
 
 def get_long_description():
+    """
+    Get the long description of readme.
+
+    Args:
+    """
     with io.open('README.rst', encoding='utf-8') as readme_file:
         readme = readme_file.read()
     # add GitHub badge in PyPi

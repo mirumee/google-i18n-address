@@ -8,6 +8,11 @@ from i18naddress import (
 
 
 def test_invalid_country_code():
+    """
+    Test if a country code
+
+    Args:
+    """
     with pytest.raises(ValueError):
         load_validation_data('XX')
     with pytest.raises(ValueError):
@@ -15,12 +20,22 @@ def test_invalid_country_code():
 
 
 def test_dictionary_access():
+    """
+    Validate the test data dictionary.
+
+    Args:
+    """
     data = load_validation_data('US')
     state = data['US/NV']
     assert state['name'] == 'Nevada'
 
 
 def test_validation_rules_canada():
+    """
+    Test if the validation.
+
+    Args:
+    """
     validation_data = get_validation_rules({'country_code': 'CA'})
     assert validation_data.country_code == 'CA'
     assert validation_data.country_area_choices == [
@@ -47,6 +62,11 @@ def test_validation_rules_canada():
 
 
 def test_validation_india():
+    """
+    Test the validation.
+
+    Args:
+    """
     validation_data = get_validation_rules({'country_code': 'IN'})
     assert validation_data.country_area_choices == [
         ('Andaman and Nicobar Islands', 'Andaman & Nicobar'),
@@ -123,6 +143,11 @@ def test_validation_india():
         ('Dadra & Nagar Haveli', 'दादरा और नगर हवेली')]
 
 def test_validation_rules_switzerland():
+    """
+    Validate rules rules.
+
+    Args:
+    """
     validation_data = get_validation_rules({'country_code': 'CH'})
     assert validation_data.allowed_fields == {
         'company_name', 'city', 'postal_code', 'street_address', 'name'}
@@ -131,6 +156,11 @@ def test_validation_rules_switzerland():
 
 
 def test_field_order_poland():
+    """
+    Test for field order.
+
+    Args:
+    """
     field_order = get_field_order({'country_code': 'PL'})
     assert field_order == [
         ['name'],
@@ -140,6 +170,11 @@ def test_field_order_poland():
 
 
 def test_field_order_china():
+    """
+    Determine the order of a single order.
+
+    Args:
+    """
     field_order = get_field_order({'country_code': 'CN'})
     assert field_order == [
         ['postal_code'],
@@ -154,6 +189,13 @@ def test_field_order_china():
     ('JP', ['prefecture', 'city', 'suburb']),
     ('KR', ['do_si', 'city', 'district'])])
 def test_locality_types(country, levels):
+    """
+    Test if country types are valid.
+
+    Args:
+        country: (todo): write your description
+        levels: (todo): write your description
+    """
     validation_data = get_validation_rules({'country_code': country})
     assert validation_data.country_area_type == levels[0]
     assert validation_data.city_type == levels[1]

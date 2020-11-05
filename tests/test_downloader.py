@@ -14,6 +14,13 @@ except ImportError:
 
 @pytest.fixture(autouse=True)
 def patch_i18n_country_data(monkeypatch, tmpdir):
+    """
+    Patch i18n18n18n_dir
+
+    Args:
+        monkeypatch: (todo): write your description
+        tmpdir: (str): write your description
+    """
     manager_dict = {'PL': 'datą', 'US': 'data'}
     all_countries = ['PL', 'US']
     data_dir = tmpdir.join('data')
@@ -40,6 +47,15 @@ def patch_i18n_country_data(monkeypatch, tmpdir):
         'pl.json': {'PL': 'datą'},
         'all.json': {'PL': 'datą'}})])
 def test_downloader_country(tmpdir, country, file_names, data):
+    """
+    Download country data from countrydir.
+
+    Args:
+        tmpdir: (str): write your description
+        country: (todo): write your description
+        file_names: (str): write your description
+        data: (array): write your description
+    """
     data_dir = tmpdir.join('data')
     download(country)
     for file_name in file_names:
@@ -49,6 +65,11 @@ def test_downloader_country(tmpdir, country, file_names, data):
 
 
 def test_downloader_invalid_country():
+    """
+    Test if a country.
+
+    Args:
+    """
     with pytest.raises(ValueError):
         download('XX')
 
@@ -62,6 +83,15 @@ def test_downloader_invalid_country():
       mock.call(('CH/AR', None))]),
     ({'lang': 'de', 'name': 'GERMANY'}, 'CH', ())])
 def test_process(monkeypatch, fetched_data, country, calls):
+    """
+    Test if the data set of a test.
+
+    Args:
+        monkeypatch: (todo): write your description
+        fetched_data: (todo): write your description
+        country: (todo): write your description
+        calls: (todo): write your description
+    """
     work_queue_put = mock.Mock(return_value=None)
     monkeypatch.setattr('i18naddress.downloader.work_queue.put', work_queue_put)
     monkeypatch.setattr('i18naddress.downloader.fetch', lambda url: fetched_data)
@@ -72,6 +102,12 @@ def test_process(monkeypatch, fetched_data, country, calls):
 
 
 def test_downloader_with_existing_data_dir(tmpdir):
+    """
+    Test if the test dataset exists.
+
+    Args:
+        tmpdir: (str): write your description
+    """
     data_dir = tmpdir.mkdir('data')
     download('PL')
     assert data_dir.join('pl.json').exists()

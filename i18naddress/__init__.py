@@ -25,6 +25,12 @@ KNOWN_FIELDS = set(FIELD_MAPPING.values()) | {"country_code"}
 
 
 def load_validation_data(country_code="all"):
+    """
+    Loads a country data
+
+    Args:
+        country_code: (str): write your description
+    """
     if not VALID_COUNTRY_CODE.match(country_code):
         raise ValueError("%r is not a valid country code" % (country_code,))
     country_code = country_code.lower()
@@ -76,6 +82,29 @@ class ValidationRules(object):
         postal_code_examples,
         postal_code_prefix,
     ):
+        """
+        Initialize a country object.
+
+        Args:
+            self: (todo): write your description
+            country_code: (str): write your description
+            country_name: (str): write your description
+            address_format: (todo): write your description
+            address_latin_format: (todo): write your description
+            allowed_fields: (bool): write your description
+            required_fields: (str): write your description
+            upper_fields: (list): write your description
+            country_area_type: (str): write your description
+            country_area_choices: (todo): write your description
+            city_type: (str): write your description
+            city_choices: (todo): write your description
+            city_area_type: (str): write your description
+            city_area_choices: (todo): write your description
+            postal_code_type: (str): write your description
+            postal_code_matchers: (str): write your description
+            postal_code_examples: (str): write your description
+            postal_code_prefix: (str): write your description
+        """
         self.country_code = country_code
         self.country_name = country_name
         self.address_format = address_format
@@ -95,6 +124,12 @@ class ValidationRules(object):
         self.postal_code_prefix = postal_code_prefix
 
     def __repr__(self):
+        """
+        Generate a string representation of primary fields.
+
+        Args:
+            self: (todo): write your description
+        """
         return (
             "ValidationRules("
             "country_code=%r, "
@@ -137,6 +172,13 @@ class ValidationRules(object):
 
 
 def _make_choices(rules, translated=False):
+    """
+    Generates a list of choices into a list of choices.
+
+    Args:
+        rules: (dict): write your description
+        translated: (todo): write your description
+    """
     sub_keys = rules.get("sub_keys")
     if not sub_keys:
         return []
@@ -169,6 +211,12 @@ def _make_choices(rules, translated=False):
 
 
 def _compact_choices(choices):
+    """
+    Given a dictionary of choices.
+
+    Args:
+        choices: (list): write your description
+    """
     value_map = OrderedDict()
     for key, value in choices:
         if not key in value_map:
@@ -180,6 +228,13 @@ def _compact_choices(choices):
 
 
 def _match_choices(value, choices):
+    """
+    Match choices tomodels.
+
+    Args:
+        value: (str): write your description
+        choices: (list): write your description
+    """
     if value:
         value = value.strip().lower()
     for name, label in choices:
@@ -190,6 +245,12 @@ def _match_choices(value, choices):
 
 
 def _load_country_data(country_code):
+    """
+    Load country data
+
+    Args:
+        country_code: (str): write your description
+    """
     database = load_validation_data("zz")
     country_data = database["ZZ"]
     if country_code:
@@ -202,6 +263,12 @@ def _load_country_data(country_code):
 
 
 def get_validation_rules(address):
+    """
+    Get validator rules
+
+    Args:
+        address: (dict): write your description
+    """
     country_code = address.get("country_code", "").upper()
     country_data, database = _load_country_data(country_code)
     country_name = country_data.get("name", "")
@@ -357,11 +424,29 @@ def get_validation_rules(address):
 
 class InvalidAddress(ValueError):
     def __init__(self, message, errors):
+        """
+        Initialize error message.
+
+        Args:
+            self: (todo): write your description
+            message: (str): write your description
+            errors: (str): write your description
+        """
         super(InvalidAddress, self).__init__(message)
         self.errors = errors
 
 
 def _normalize_field(name, rules, data, choices, errors):
+    """
+    Normalize a field.
+
+    Args:
+        name: (str): write your description
+        rules: (list): write your description
+        data: (dict): write your description
+        choices: (list): write your description
+        errors: (todo): write your description
+    """
     value = data.get(name)
     if name in rules.upper_fields and value is not None:
         value = value.upper()
@@ -382,6 +467,12 @@ def _normalize_field(name, rules, data, choices, errors):
 
 
 def normalize_address(address):
+    """
+    Normalize address.
+
+    Args:
+        address: (array): write your description
+    """
     errors = {}
     try:
         rules = get_validation_rules(address)
@@ -416,7 +507,21 @@ def normalize_address(address):
 
 
 def _format_address_line(line_format, address, rules):
+    """
+    Format a single line line.
+
+    Args:
+        line_format: (str): write your description
+        address: (todo): write your description
+        rules: (str): write your description
+    """
     def _get_field(name):
+        """
+        Returns the field of a field.
+
+        Args:
+            name: (str): write your description
+        """
         value = address.get(name, "")
         if name in rules.upper_fields:
             value = value.upper()
@@ -455,6 +560,13 @@ def get_field_order(address, latin=False):
 
 
 def format_address(address, latin=False):
+    """
+    Format an address ascii - formatted string.
+
+    Args:
+        address: (str): write your description
+        latin: (todo): write your description
+    """
     rules = get_validation_rules(address)
     address_format = rules.address_latin_format if latin else rules.address_format
     address_line_formats = address_format.split("%n")
@@ -467,6 +579,13 @@ def format_address(address, latin=False):
 
 
 def latinize_address(address, normalized=False):
+    """
+    Latinize an address
+
+    Args:
+        address: (todo): write your description
+        normalized: (bool): write your description
+    """
     if not normalized:
         address = normalize_address(address)
     cleaned_data = address.copy()
