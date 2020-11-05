@@ -20,16 +20,34 @@ manager = Manager()
 
 
 def fetch(url):  # pragma: no cover
+    """
+    Fetches the given url
+
+    Args:
+        url: (str): write your description
+    """
     logger.debug(url)
     data = requests.get(url).json()
     return data
 
 
 def get_countries():  # pragma: no cover
+    """
+    Return the number of countries
+
+    Args:
+    """
     return fetch(MAIN_URL)['countries'].split('~') + ['ZZ']
 
 
 def process(key, language):
+    """
+    Process a single language.
+
+    Args:
+        key: (str): write your description
+        language: (str): write your description
+    """
     full_key = '%s--%s' % (key, language) if language else key
     url = '%s/%s' % (MAIN_URL, full_key)
     data = fetch(url)
@@ -48,6 +66,12 @@ def process(key, language):
 
 
 def worker(data):  # pragma: no cover
+    """
+    Worker thread.
+
+    Args:
+        data: (array): write your description
+    """
     while True:
         try:
             key, lang = work_queue.get()
@@ -64,6 +88,13 @@ def worker(data):  # pragma: no cover
 
 
 def serialize(obj, path):
+    """
+    Serialize obj to a string.
+
+    Args:
+        obj: (todo): write your description
+        path: (str): write your description
+    """
     with io.open(path, 'w', encoding='utf8') as output:
         data_str = json.dumps(dict(obj), ensure_ascii=False, sort_keys=True)
         output.write(data_str)
@@ -71,6 +102,13 @@ def serialize(obj, path):
 
 
 def download(country=None, processes=16):
+    """
+    Download data from country.
+
+    Args:
+        country: (list): write your description
+        processes: (int): write your description
+    """
     if not os.path.exists(VALIDATION_DATA_DIR):
         os.mkdir(VALIDATION_DATA_DIR)
     data = manager.dict()
