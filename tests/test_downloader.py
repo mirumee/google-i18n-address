@@ -45,7 +45,7 @@ def test_downloader_country(tmpdir, country, file_names, data):
     for file_name in file_names:
         assert data_dir.join(file_name).exists()
         assert json.load(
-            data_dir.join(file_name), encoding='utf-8') == data[file_name]
+            data_dir.join(file_name)) == data[file_name]
 
 
 def test_downloader_invalid_country():
