@@ -1,1 +1,225 @@
-{"RO": {"fmt": "%N%n%O%n%A%n%Z %C", "id": "data/RO", "key": "RO", "name": "ROMANIA", "posturl": "http://www.posta-romana.ro/zip_codes", "require": "ACZ", "upper": "AC", "zip": "\\d{6}", "zipex": "060274,061357,200716"}}
+{
+  "RO": {
+    "fmt": "%N%n%O%n%A%n %C, %D%S %Z",
+    "id": "data/RO",
+    "key": "RO",
+    "name": "ROMANIA",
+    "posturl": "http://www.posta-romana.ro/zip_codes",
+    "sub_keys": "AB~AR~AG~BC~BH~BN~BT~BR~BV~B~BZ~CL~CS~CJ~CT~CV~DB~DJ~GL~GR~GJ~HR~HD~IL~IS~IF~MM~MH~MS~NT~OT~PH~SJ~SM~SB~SV~TR~TM~TL~VL~VS~VN",
+    "sub_names": "Alba~Arad~Arges~Bacau~Bihor~Bistrita-Nasaud~Botosani~Braila~Brasov~Bucuresti~Buzau~Calarasi~Caras-Severin~Cluj~Constanta~Covasna~Dambovita~Dolj~Galati~Giurgiu~Gorj~Harghita~Hunedoara~Ialomita~Iasi~Ilfov~Maramures~Mehedinti~Mures~Neamt~Olt~Prahova~Salaj~Satu Mare~Sibiu~Suceava~Teleorman~Timis~Tulcea~Valcea~Vaslui~Vrancea",
+    "require": "ACS",
+    "upper": "",
+    "zip": "\\d{6}",
+    "zipex": "060274,061357,200716"
+  },
+  "RO/AB": {
+    "id": "data/RO/AB",
+    "key": "AB",
+    "name": "Alba"
+  },
+  "RO/AR": {
+    "id": "data/RO/AR",
+    "key": "AR",
+    "name": "Arad"
+  },
+  "RO/AG": {
+    "id": "data/RO/AG",
+    "key": "AG",
+    "name": "Arges"
+  },
+  "RO/BC": {
+    "id": "data/RO/BC",
+    "key": "BC",
+    "name": "Bacau"
+  },
+  "RO/BH": {
+    "id": "data/RO/BH",
+    "key": "BH",
+    "name": "Bihor"
+  },
+  "RO/BN": {
+    "id": "data/RO/BN",
+    "key": "BN",
+    "name": "Bistrita-Nasaud"
+  },
+  "RO/BT": {
+    "id": "data/RO/BT",
+    "key": "BT",
+    "name": "Botosani"
+  },
+  "RO/BR": {
+    "id": "data/RO/BR",
+    "key": "BR",
+    "name": "Braila"
+  },
+  "RO/BV": {
+    "id": "data/RO/BV",
+    "key": "BV",
+    "name": "Brasov"
+  },
+  "RO/B": {
+    "id": "data/RO/B",
+    "key": "B",
+    "name": "Bucuresti"
+  },
+  "RO/BZ": {
+    "id": "data/RO/BZ",
+    "key": "BZ",
+    "name": "Buzau"
+  },
+  "RO/CL": {
+    "id": "data/RO/CL",
+    "key": "CL",
+    "name": "Calarasi"
+  },
+  "RO/CS": {
+    "id": "data/RO/CS",
+    "key": "CS",
+    "name": "Caras-Severin"
+  },
+  "RO/CJ": {
+    "id": "data/RO/CJ",
+    "key": "CJ",
+    "name": "Cluj"
+  },
+  "RO/CT": {
+    "id": "data/RO/CT",
+    "key": "CT",
+    "name": "Constanta"
+  },
+  "RO/CV": {
+    "id": "data/RO/CV",
+    "key": "CV",
+    "name": "Covasna"
+  },
+  "RO/DB": {
+    "id": "data/RO/DB",
+    "key": "DB",
+    "name": "Dambovita"
+  },
+  "RO/DJ": {
+    "id": "data/RO/DJ",
+    "key": "DJ",
+    "name": "Dolj"
+  },
+  "RO/GL": {
+    "id": "data/RO/GL",
+    "key": "GL",
+    "name": "Galati"
+  },
+  "RO/GR": {
+    "id": "data/RO/GR",
+    "key": "GR",
+    "name": "Giurgiu"
+  },
+  "RO/GJ": {
+    "id": "data/RO/GJ",
+    "key": "GJ",
+    "name": "Gorj"
+  },
+  "RO/HR": {
+    "id": "data/RO/HR",
+    "key": "HR",
+    "name": "Harghita"
+  },
+  "RO/HD": {
+    "id": "data/RO/HD",
+    "key": "HD",
+    "name": "Hunedoara"
+  },
+  "RO/IL": {
+    "id": "data/RO/IL",
+    "key": "IL",
+    "name": "Ialomita"
+  },
+  "RO/IS": {
+    "id": "data/RO/IS",
+    "key": "IS",
+    "name": "Iasi"
+  },
+  "RO/IF": {
+    "id": "data/RO/IF",
+    "key": "IF",
+    "name": "Ilfov"
+  },
+  "RO/MM": {
+    "id": "data/RO/MM",
+    "key": "MM",
+    "name": "Maramures"
+  },
+  "RO/MH": {
+    "id": "data/RO/MH",
+    "key": "MH",
+    "name": "Mehedinti"
+  },
+  "RO/MS": {
+    "id": "data/RO/MS",
+    "key": "MS",
+    "name": "Mures"
+  },
+  "RO/NT": {
+    "id": "data/RO/NT",
+    "key": "NT",
+    "name": "Neamt"
+  },
+  "RO/OT": {
+    "id": "data/RO/OT",
+    "key": "OT",
+    "name": "Olt"
+  },
+  "RO/PH": {
+    "id": "data/RO/PH",
+    "key": "PH",
+    "name": "Prahova"
+  },
+  "RO/SJ": {
+    "id": "data/RO/SJ",
+    "key": "SJ",
+    "name": "Salaj"
+  },
+  "RO/SM": {
+    "id": "data/RO/SM",
+    "key": "SM",
+    "name": "Satu Mare"
+  },
+  "RO/SB": {
+    "id": "data/RO/SB",
+    "key": "SB",
+    "name": "Sibiu"
+  },
+  "RO/SV": {
+    "id": "data/RO/SV",
+    "key": "SV",
+    "name": "Suceava"
+  },
+  "RO/TR": {
+    "id": "data/RO/TR",
+    "key": "TR",
+    "name": "Teleorman"
+  },
+  "RO/TM": {
+    "id": "data/RO/TM",
+    "key": "TM",
+    "name": "Timis"
+  },
+  "RO/TL": {
+    "id": "data/RO/TL",
+    "key": "TL",
+    "name": "Tulcea"
+  },
+  "RO/VL": {
+    "id": "data/RO/VL",
+    "key": "VL",
+    "name": "Valcea"
+  },
+  "RO/VS": {
+    "id": "data/RO/VS",
+    "key": "VS",
+    "name": "Vaslui"
+  },
+  "RO/VN": {
+    "id": "data/RO/VN",
+    "key": "VN",
+    "name": "Vrancea"
+  }
+}
