@@ -62,8 +62,7 @@ def test_validation_india():
         ('Chandigarh', 'चंडीगढ़'),
         ('Chhattisgarh', 'Chhattisgarh'),
         ('Chhattisgarh', 'छत्तीसगढ़'),
-        ('Dadra and Nagar Haveli', 'Dadra & Nagar Haveli'),
-        ('Daman and Diu', 'Daman & Diu'),
+        ('Dadra and Nagar Haveli and Daman and Diu', 'Dadra & Nagar Haveli & Daman & Diu'),
         ('Delhi', 'Delhi'),
         ('Delhi', 'दिल्ली'),
         ('Goa', 'Goa'),
@@ -81,6 +80,8 @@ def test_validation_india():
         ('Karnataka', 'कर्नाटक'),
         ('Kerala', 'Kerala'),
         ('Kerala', 'केरल'),
+        ('Ladakh', 'Ladakh'),
+        ('Ladakh', 'लद्दाख़'),
         ('Lakshadweep', 'Lakshadweep'),
         ('Lakshadweep', 'लक्षद्वीप'),
         ('Madhya Pradesh', 'Madhya Pradesh'),
@@ -119,8 +120,7 @@ def test_validation_india():
         ('West Bengal', 'पश्चिम बंगाल'),
         ('Andaman & Nicobar', 'अंडमान और निकोबार द्वीपसमूह'),
         ('Jammu & Kashmir', 'जम्मू और कश्मीर'),
-        ('Daman & Diu', 'दमन और दीव'),
-        ('Dadra & Nagar Haveli', 'दादरा और नगर हवेली')]
+        ('Dadra & Nagar Haveli & Daman & Diu', 'दादरा और नगर हवेली और दमन और दिउ')]
 
 def test_validation_rules_switzerland():
     validation_data = get_validation_rules({'country_code': 'CH'})
