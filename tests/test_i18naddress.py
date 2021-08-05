@@ -1,5 +1,6 @@
 # coding: utf-8
 from __future__ import unicode_literals
+from unittest.mock import patch
 
 import pytest
 
@@ -158,3 +159,9 @@ def test_locality_types(country, levels):
     assert validation_data.country_area_type == levels[0]
     assert validation_data.city_type == levels[1]
     assert validation_data.city_area_type == levels[2]
+
+@patch('i18naddress.VALIDATION_DATA_PATH', '/home/bug%2Fexample/%s.json')
+def test_validation_path_with_percent_symbol():
+    data = load_validation_data('US')
+    state = data['US/NV']
+    assert state['name'] == 'Nevada'
