@@ -28,7 +28,14 @@ def load_validation_data(country_code="all"):
     if not VALID_COUNTRY_CODE.match(country_code):
         raise ValueError("%r is not a valid country code" % (country_code,))
     country_code = country_code.lower()
-    path = VALIDATION_DATA_PATH % (country_code,)
+    try:
+        # VALIDATION_DATA_PATH may have '%' symbols
+        # for backwards compatability if VALIDATION_DATA_PATH is imported
+        # by consumers of this package.
+        path = VALIDATION_DATA_PATH % (country_code,)
+    except TypeError:
+        path = os.path.join(VALIDATION_DATA_DIR, "%s.json" % country_code)
+
     if not os.path.exists(path):
         raise ValueError("%r is not a valid country code" % (country_code,))
     with io.open(path, encoding="utf-8") as data:
