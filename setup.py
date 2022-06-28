@@ -51,10 +51,10 @@ setup(
     cmdclass={"update_validation_files": DownloadJSONFiles},
     zip_safe=False,
     classifiers=[
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Environment :: Web Environment",
         "Topic :: Software Development :: Internationalization",
     ],
