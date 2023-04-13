@@ -1,7 +1,7 @@
 Google i18n address
 ===========================================================================================
 
-|codecov.io| |Circle CI| |PyPi downloads| |requires.io| |PyPi version| |PyPi pythons|
+|codecov.io| |Circle CI| |PyPi downloads| |PyPi version| |PyPi pythons|
 
 This package contains a copy of `Google's i18n
 address <https://chromium-i18n.appspot.com/ssl-address>`_ metadata repository
@@ -333,5 +333,3 @@ Django forms will return only required address fields in ``form.cleaned_data`` d
    :target: https://pypi.python.org/pypi/google-i18n-address
 .. |GitHub| image:: https://img.shields.io/github/stars/mirumee/google-i18n-address.svg?style=social
    :target: https://github.com/mirumee/google-i18n-address
-.. |requires.io| image:: https://img.shields.io/requires/github/mirumee/google-i18n-address.svg
-   :target: https://requires.io/github/mirumee/google-i18n-address/requirements/?branch=master
