@@ -1,4 +1,0 @@
-[run]
-branch = True
-omit = */test_*.py, setup.py
-source = i18naddress

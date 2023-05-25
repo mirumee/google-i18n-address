@@ -1,6 +1,3 @@
-from __future__ import unicode_literals
-
-import io
 import json
 import os
 import re
@@ -26,7 +23,7 @@ KNOWN_FIELDS = set(FIELD_MAPPING.values()) | {"country_code"}
 
 def load_validation_data(country_code="all"):
     if not VALID_COUNTRY_CODE.match(country_code):
-        raise ValueError("%r is not a valid country code" % (country_code,))
+        raise ValueError(f"{country_code!r} is not a valid country code")
     country_code = country_code.lower()
     try:
         # VALIDATION_DATA_PATH may have '%' symbols
@@ -37,12 +34,12 @@ def load_validation_data(country_code="all"):
         path = os.path.join(VALIDATION_DATA_DIR, "%s.json" % country_code)
 
     if not os.path.exists(path):
-        raise ValueError("%r is not a valid country code" % (country_code,))
-    with io.open(path, encoding="utf-8") as data:
+        raise ValueError(f"{country_code!r} is not a valid country code")
+    with open(path, encoding="utf-8") as data:
         return json.load(data)
 
 
-class ValidationRules(object):
+class ValidationRules:
     __slots__ = [
         "country_code",
         "country_name",
@@ -104,24 +101,23 @@ class ValidationRules(object):
     def __repr__(self):
         return (
             "ValidationRules("
-            "country_code=%r, "
-            "country_name=%r, "
-            "address_format=%r, "
-            "address_latin_format=%r, "
-            "allowed_fields=%r, "
-            "required_fields=%r, "
-            "upper_fields=%r, "
-            "country_area_type=%r, "
-            "country_area_choices=%r, "
-            "city_type=%r, "
-            "city_choices=%r, "
-            "city_area_type=%r, "
-            "city_area_choices=%r, "
-            "postal_code_type=%r, "
-            "postal_code_matchers=%r, "
-            "postal_code_examples=%r, "
-            "postal_code_prefix=%r)"
-            % (
+            "country_code={!r}, "
+            "country_name={!r}, "
+            "address_format={!r}, "
+            "address_latin_format={!r}, "
+            "allowed_fields={!r}, "
+            "required_fields={!r}, "
+            "upper_fields={!r}, "
+            "country_area_type={!r}, "
+            "country_area_choices={!r}, "
+            "city_type={!r}, "
+            "city_choices={!r}, "
+            "city_area_type={!r}, "
+            "city_area_choices={!r}, "
+            "postal_code_type={!r}, "
+            "postal_code_matchers={!r}, "
+            "postal_code_examples={!r}, "
+            "postal_code_prefix={!r})".format(
                 self.country_code,
                 self.country_name,
                 self.address_format,
@@ -178,7 +174,7 @@ def _make_choices(rules, translated=False):
 def _compact_choices(choices):
     value_map = OrderedDict()
     for key, value in choices:
-        if not key in value_map:
+        if key not in value_map:
             value_map[key] = set()
         value_map[key].add(value)
     return [
@@ -202,7 +198,7 @@ def _load_country_data(country_code):
     if country_code:
         country_code = country_code.upper()
         if country_code.lower() == "zz":
-            raise ValueError("%r is not a valid country code" % (country_code,))
+            raise ValueError(f"{country_code!r} is not a valid country code")
         database = load_validation_data(country_code.lower())
         country_data.update(database[country_code])
     return country_data, database
@@ -253,9 +249,7 @@ def get_validation_rules(address):
                 if is_default_language:
                     localized_country_data = database[country_code]
                 else:
-                    localized_country_data = database[
-                        "%s--%s" % (country_code, language)
-                    ]
+                    localized_country_data = database[f"{country_code}--{language}"]
                 localized_country_area_choices = _make_choices(localized_country_data)
                 country_area_choices += localized_country_area_choices
                 existing_choice = country_area is not None
@@ -265,12 +259,10 @@ def get_validation_rules(address):
                 if matched_country_area:
                     # third level of data is for cities
                     if is_default_language:
-                        country_area_data = database[
-                            "%s/%s" % (country_code, country_area)
-                        ]
+                        country_area_data = database[f"{country_code}/{country_area}"]
                     else:
                         country_area_data = database[
-                            "%s/%s--%s" % (country_code, country_area, language)
+                            f"{country_code}/{country_area}--{language}"
                         ]
                     if not existing_choice:
                         if "zip" in country_area_data:
@@ -290,12 +282,11 @@ def get_validation_rules(address):
                         # fourth level of data is for dependent sublocalities
                         if is_default_language:
                             city_data = database[
-                                "%s/%s/%s" % (country_code, country_area, city)
+                                f"{country_code}/{country_area}/{city}"
                             ]
                         else:
                             city_data = database[
-                                "%s/%s/%s--%s"
-                                % (country_code, country_area, city, language)
+                                f"{country_code}/{country_area}/{city}--{language}"
                             ]
                         if not existing_choice:
                             if "zip" in city_data:
@@ -314,13 +305,11 @@ def get_validation_rules(address):
                             if matched_city_area:
                                 if is_default_language:
                                     city_area_data = database[
-                                        "%s/%s/%s/%s"
-                                        % (country_code, country_area, city, city_area)
+                                        f"{country_code}/{country_area}/{city}/{city_area}"
                                     ]
                                 else:
                                     city_area_data = database[
-                                        "%s/%s/%s/%s--%s"
-                                        % (
+                                        "{}/{}/{}/{}--{}".format(
                                             country_code,
                                             country_area,
                                             city,
@@ -362,9 +351,9 @@ def get_validation_rules(address):
     )
 
 
-class InvalidAddress(ValueError):
+class InvalidAddressError(ValueError):
     def __init__(self, message, errors):
-        super(InvalidAddress, self).__init__(message)
+        super().__init__(message)
         self.errors = errors
 
 
@@ -418,7 +407,7 @@ def normalize_address(address):
         _normalize_field("street_address", rules, cleaned_data, [], errors)
         _normalize_field("sorting_code", rules, cleaned_data, [], errors)
     if errors:
-        raise InvalidAddress("Invalid address", errors)
+        raise InvalidAddressError("Invalid address", errors)
     return cleaned_data
 
 
@@ -482,21 +471,21 @@ def latinize_address(address, normalized=False):
     if country_code:
         country_area = address["country_area"]
         if country_area:
-            key = "%s/%s" % (country_code, country_area)
+            key = f"{country_code}/{country_area}"
             country_area_data = database.get(key)
             if country_area_data:
                 cleaned_data["country_area"] = country_area_data.get(
                     "lname", country_area_data.get("name", country_area)
                 )
                 city = address["city"]
-                key = "%s/%s/%s" % (country_code, country_area, city)
+                key = f"{country_code}/{country_area}/{city}"
                 city_data = database.get(key)
                 if city_data:
                     cleaned_data["city"] = city_data.get(
                         "lname", city_data.get("name", city)
                     )
                     city_area = address["city_area"]
-                    key = "%s/%s/%s/%s" % (country_code, country_area, city, city_area)
+                    key = f"{country_code}/{country_area}/{city}/{city_area}"
                     city_area_data = database.get(key)
                     if city_area_data:
                         cleaned_data["city_area"] = city_area_data.get(

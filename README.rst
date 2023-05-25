@@ -1,7 +1,7 @@
 Google i18n address
 ===========================================================================================
 
-|codecov.io| |Circle CI| |PyPi downloads| |PyPi version| |PyPi pythons|
+|codecov.io| |GH Actions| |PyPi downloads| |PyPi version| |PyPi pythons|
 
 This package contains a copy of `Google's i18n
 address <https://chromium-i18n.appspot.com/ssl-address>`_ metadata repository
@@ -19,7 +19,7 @@ Addresses validation
 
 The ``normalize_address`` function checks the address and either returns its
 canonical form (suitable for storage and use in addressing envelopes) or
-raises an ``InvalidAddress`` exception that contains a list of errors.
+raises an ``InvalidAddressError`` exception that contains a list of errors.
 
 
 Address fields
@@ -49,10 +49,10 @@ Address validation with only country code:
 
 .. code:: python
 
-    >>> from i18naddress import InvalidAddress, normalize_address
+    >>> from i18naddress import InvalidAddressError, normalize_address
     >>> try:
     ...     address = normalize_address({'country_code': 'US'})
-    ... except InvalidAddress as e:
+    ... except InvalidAddressError as e:
     ...     print(e.errors)
     ...
     {'city': 'required',
@@ -84,7 +84,7 @@ Postal code/zip code validation example:
 
 .. code:: python
 
-    >>> from i18naddress import InvalidAddress, normalize_address
+    >>> from i18naddress import InvalidAddressError, normalize_address
     >>> try:
     ...     address = normalize_address({
     ...         'country_code': 'US',
@@ -92,7 +92,7 @@ Postal code/zip code validation example:
     ...         'city': 'Mountain View',
     ...         'postal_code': '74043',
     ...         'street_address': '1600 Amphitheatre Pkwy'})
-    ... except InvalidAddress as e:
+    ... except InvalidAddressError as e:
     ...     print(e.errors)
     ...
     {'postal_code': 'invalid'}
@@ -278,7 +278,7 @@ Django forms will return only required address fields in ``form.cleaned_data`` d
 
     from django import forms
 
-    from i18naddress import InvalidAddress, normalize_address, get_validation_rules
+    from i18naddress import InvalidAddressError, normalize_address, get_validation_rules
 
 
     class AddressForm(forms.Form):
@@ -323,8 +323,8 @@ Django forms will return only required address fields in ``form.cleaned_data`` d
 
 .. |codecov.io| image:: https://img.shields.io/codecov/c/github/mirumee/google-i18n-address.svg
    :target: https://codecov.io/github/mirumee/google-i18n-address?branch=master
-.. |Circle CI| image:: https://img.shields.io/circleci/project/mirumee/google-i18n-address.svg
-   :target: https://circleci.com/gh/mirumee/google-i18n-address/tree/master
+.. |GH Actions| image:: https://github.com/mirumee/google-i18n-address/actions/workflows/python-package.yml/badge.svg?branch=master
+   :target: https://github.com/mirumee/google-i18n-address/actions?query=branch%3Amaster+
 .. |PyPi downloads| image:: https://img.shields.io/pypi/dm/google-i18n-address.svg
    :target: https://pypi.python.org/pypi/google-i18n-address
 .. |PyPi pythons| image:: https://img.shields.io/pypi/pyversions/google-i18n-address.svg
