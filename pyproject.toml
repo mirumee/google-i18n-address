@@ -1,0 +1,59 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "google-i18n-address"
+version = "3.0.0"
+readme = "README.rst"
+description = "Address validation helpers for Google's i18n address database"
+authors = [{ name = "Mirumee Software", email = "hello@mirumee.com" }]
+license = "BSD-3-Clause"
+dependencies = ["requests>=2.7.0"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Topic :: Software Development :: Internationalization",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Operating System :: OS Independent",
+    "Environment :: Web Environment",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+[project.optional-dependencies]
+dev = ["black", "ruff"]
+test = ["pytest", "pytest-cov"]
+
+[project.scripts]
+update-validation-files = "i18naddress.scripts:download_json_files"
+
+[tool.hatch.build]
+exclude = ["tests"]
+include = [
+  "i18naddress/**/*.py",
+  "i18naddress/**/*.json",
+  "LICENSE",
+  "README.rst",
+  "pyproject.toml",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/mirumee/google-i18n-address"
+"Repository" = "https://github.com/mirumee/google-i18n-address"
+"Bug Tracker" = "https://github.com/mirumee/google-i18n-address/issues"
+
+[tool.black]
+target-version = ["py37"]
+
+[tool.ruff]
+# rules: https://beta.ruff.rs/docs/rules
+select = ["E", "F", "G", "I", "N", "Q", "UP", "T20", "TID"]
+
+target-version = "py37"  # use the minimal supported version
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "all"
