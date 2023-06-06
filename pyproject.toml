@@ -36,9 +36,6 @@ exclude = ["tests"]
 include = [
   "i18naddress/**/*.py",
   "i18naddress/**/*.json",
-  "LICENSE",
-  "README.rst",
-  "pyproject.toml",
 ]
 
 [project.urls]
