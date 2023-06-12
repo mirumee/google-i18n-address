@@ -8,9 +8,10 @@ version = "3.1.0"
 readme = "README.rst"
 description = "Address validation helpers for Google's i18n address database"
 authors = [{ name = "Mirumee Software", email = "hello@mirumee.com" }]
-license = "BSD-3-Clause"
+license = {file = "LICENSE"}
 dependencies = ["requests>=2.7.0"]
 classifiers = [
+    "License :: OSI Approved :: BSD License",
     "Development Status :: 5 - Production/Stable",
     "Topic :: Software Development :: Internationalization",
     "Topic :: Software Development :: Libraries :: Python Modules",
