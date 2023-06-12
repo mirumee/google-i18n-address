@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "google-i18n-address"
-version = "3.0.0"
+version = "3.1.0"
 readme = "README.rst"
 description = "Address validation helpers for Google's i18n address database"
 authors = [{ name = "Mirumee Software", email = "hello@mirumee.com" }]
