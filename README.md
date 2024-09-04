@@ -1,7 +1,8 @@
 # Google i18n address
 
 ![codecov.io](https://img.shields.io/codecov/c/github/mirumee/google-i18n-address.svg)
-![GH Actions](https://github.com/mirumee/google-i18n-address/actions/workflows/python-package.yml/badge.svg?branch=master)
+![GH Actions](https://github.com/mirumee/google-i18n-address/actions/workflows/publish.yml/badge.svg?branch=master)
+![GH Actions](https://github.com/mirumee/google-i18n-address/actions/workflows/code_quality.yml/badge.svg?branch=master)
 ![PyPi downloads](https://img.shields.io/pypi/dm/google-i18n-address.svg)
 ![PyPi version](https://img.shields.io/pypi/v/google-i18n-address.svg)
 ![PyPi pythons](https://img.shields.io/pypi/pyversions/google-i18n-address.svg)
