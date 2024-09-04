@@ -31,7 +31,7 @@ def load_validation_data(country_code="all"):
         # by consumers of this package.
         path = VALIDATION_DATA_PATH % (country_code,)
     except TypeError:
-        path = os.path.join(VALIDATION_DATA_DIR, "%s.json" % country_code)
+        path = os.path.join(VALIDATION_DATA_DIR, f"{country_code}.json")
 
     if not os.path.exists(path):
         raise ValueError(f"{country_code!r} is not a valid country code")
@@ -101,41 +101,23 @@ class ValidationRules:
     def __repr__(self):
         return (
             "ValidationRules("
-            "country_code={!r}, "
-            "country_name={!r}, "
-            "address_format={!r}, "
-            "address_latin_format={!r}, "
-            "allowed_fields={!r}, "
-            "required_fields={!r}, "
-            "upper_fields={!r}, "
-            "country_area_type={!r}, "
-            "country_area_choices={!r}, "
-            "city_type={!r}, "
-            "city_choices={!r}, "
-            "city_area_type={!r}, "
-            "city_area_choices={!r}, "
-            "postal_code_type={!r}, "
-            "postal_code_matchers={!r}, "
-            "postal_code_examples={!r}, "
-            "postal_code_prefix={!r})".format(
-                self.country_code,
-                self.country_name,
-                self.address_format,
-                self.address_latin_format,
-                self.allowed_fields,
-                self.required_fields,
-                self.upper_fields,
-                self.country_area_type,
-                self.country_area_choices,
-                self.city_type,
-                self.city_choices,
-                self.city_area_type,
-                self.city_area_choices,
-                self.postal_code_type,
-                self.postal_code_matchers,
-                self.postal_code_examples,
-                self.postal_code_prefix,
-            )
+            f"country_code={self.country_code!r}, "
+            f"country_name={self.country_name!r}, "
+            f"address_format={self.address_format!r}, "
+            f"address_latin_format={self.address_latin_format!r}, "
+            f"allowed_fields={self.allowed_fields!r}, "
+            f"required_fields={self.required_fields!r}, "
+            f"upper_fields={self.upper_fields!r}, "
+            f"country_area_type={self.country_area_type!r}, "
+            f"country_area_choices={self.country_area_choices!r}, "
+            f"city_type={self.city_type!r}, "
+            f"city_choices={self.city_choices!r}, "
+            f"city_area_type={self.city_area_type!r}, "
+            f"city_area_choices={self.city_area_choices!r}, "
+            f"postal_code_type={self.postal_code_type!r}, "
+            f"postal_code_matchers={self.postal_code_matchers!r}, "
+            f"postal_code_examples={self.postal_code_examples!r}, "
+            f"postal_code_prefix={self.postal_code_prefix!r})"
         )
 
 
@@ -150,9 +132,8 @@ def _make_choices(rules, translated=False):
         choices += [
             (key, value) for key, value in zip(sub_keys, sub_names.split("~")) if value
         ]
-    else:
-        if not translated:
-            choices += [(key, key) for key in sub_keys]
+    elif not translated:
+        choices += [(key, key) for key in sub_keys]
     if not translated:
         sub_lnames = rules.get("sub_lnames")
         if sub_lnames:
@@ -309,13 +290,7 @@ def get_validation_rules(address):
                                     ]
                                 else:
                                     city_area_data = database[
-                                        "{}/{}/{}/{}--{}".format(
-                                            country_code,
-                                            country_area,
-                                            city,
-                                            city_area,
-                                            language,
-                                        )
+                                        f"{country_code}/{country_area}/{city}/{city_area}--{language}"
                                     ]
                                 if not existing_choice:
                                     if "zip" in city_area_data:
@@ -419,8 +394,7 @@ def _format_address_line(line_format, address, rules):
         return value
 
     replacements = {
-        "%%%s" % code: _get_field(field_name)
-        for code, field_name in FIELD_MAPPING.items()
+        f"%{code}": _get_field(field_name) for code, field_name in FIELD_MAPPING.items()
     }
 
     fields = re.split("(%.)", line_format)
@@ -432,14 +406,14 @@ def get_field_order(address, latin=False):
     """
     Returns expected order of address form fields as a list of lists.
     Example for PL:
-    >>> get_field_order({'country_code': 'PL'})
+    >>> get_field_order({"country_code": "PL"})
     [[u'name'], [u'company_name'], [u'street_address'], [u'postal_code', u'city']]
     """
     rules = get_validation_rules(address)
     address_format = rules.address_latin_format if latin else rules.address_format
     address_lines = address_format.split("%n")
     replacements = {
-        "%%%s" % code: field_name for code, field_name in FIELD_MAPPING.items()
+        f"%{code}": field_name for code, field_name in FIELD_MAPPING.items()
     }
     all_lines = []
     for line in address_lines:

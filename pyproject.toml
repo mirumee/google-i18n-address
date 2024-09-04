@@ -4,55 +4,131 @@ build-backend = "hatchling.build"
 
 [project]
 name = "google-i18n-address"
-version = "3.1.0"
-readme = "README.rst"
+version = "3.1.1"
+readme = "README.md"
 description = "Address validation helpers for Google's i18n address database"
 authors = [{ name = "Mirumee Software", email = "hello@mirumee.com" }]
-license = {file = "LICENSE"}
-dependencies = ["requests>=2.7.0"]
+license = { file = "LICENSE" }
 classifiers = [
-  "Development Status :: 5 - Production/Stable",
-  "Intended Audience :: Developers",
-  "License :: OSI Approved :: BSD License",
-  "Topic :: Software Development :: Internationalization",
-  "Topic :: Software Development :: Libraries :: Python Modules",
-  "Operating System :: OS Independent",
-  "Environment :: Web Environment",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Topic :: Software Development :: Internationalization",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Operating System :: OS Independent",
+    "Environment :: Web Environment",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
-
-[project.optional-dependencies]
-dev = ["black", "ruff"]
-test = ["pytest", "pytest-cov"]
-
-[project.scripts]
-update-validation-files = "i18naddress.scripts:download_json_files"
-
-[tool.hatch.build]
-exclude = ["tests"]
-include = [
-  "i18naddress/**/*.py",
-  "i18naddress/**/*.json",
-]
+dependencies = ["requests>=2.7.0"]
 
 [project.urls]
 "Homepage" = "https://github.com/mirumee/google-i18n-address"
 "Repository" = "https://github.com/mirumee/google-i18n-address"
 "Bug Tracker" = "https://github.com/mirumee/google-i18n-address/issues"
 
-[tool.black]
-target-version = ["py37"]
+[project.optional-dependencies]
+dev = ["ipdb"]
+test = ["pytest-asyncio", "pytest-cov", "coverage[toml]"]
+
+[project.scripts]
+update-validation-files = "i18naddress.scripts:download_json_files"
+
+
+[tool.hatch.build]
+include = [
+    "src/i18naddress/**/*.py",
+    "src/i18naddress/**/*.json",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/i18naddress"]
+
+[tool.hatch.build.targets.sdist]
+packages = ["src/i18naddress"]
+
+
+[tool.hatch.envs.default]
+features = ["dev", "test"]
+
+[tool.hatch.envs.default.scripts]
+check = ["hatch fmt", "hatch test -a", "hatch test --cover"]
+
+
+[tool.hatch.envs.hatch-test]
+dependencies = [
+    "asynctest",
+    "ipdb",
+    "pytest-asyncio",
+    "pytest-cov",
+    "coverage[toml]",
+]
+
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+# Coverage - `hatch test --cover` options
+
+[tool.coverage.run]
+source_pkgs = ["i18naddress"]
+branch = true
+parallel = true
+
+[tool.coverage.paths]
+i18naddress = ["src/i18naddress"]
+tests = ["tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "no cov",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstract",
+]
+fail_under = 90
+
+[tool.hatch.envs.coverage]
+detached = true
+dependencies = [
+  "coverage[toml]",
+]
+
+[tool.hatch.envs.coverage.scripts]
+combine = "coverage combine {args}"
+html = "coverage html --skip-covered --skip-empty"
+xml = "coverage xml --skip-empty"
+
+# Ruff - `hatch fmt` options
 
 [tool.ruff]
-# rules: https://beta.ruff.rs/docs/rules
-select = ["E", "F", "G", "I", "N", "Q", "UP", "T20", "TID"]
+line-length = 88
+target-version = "py38"
 
-target-version = "py37"  # use the minimal supported version
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 80
 
-[tool.ruff.flake8-tidy-imports]
+[tool.ruff.lint]
+select = ["E", "F", "G", "I", "N", "Q", "UP", "C90", "T20", "TID"]
+
+[tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 30
+
+[tool.ruff.lint.isort]
+known-first-party = ["i18naddress"]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
