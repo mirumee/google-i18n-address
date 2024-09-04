@@ -75,7 +75,7 @@ def download(country=None, processes=16):
     if country:
         country = country.upper()
         if country not in countries:
-            raise ValueError("%s is not supported country code" % country)
+            raise ValueError(f"{country} is not supported country code")
         countries = [country]
     for country in countries:
         work_queue.put((country, None))
