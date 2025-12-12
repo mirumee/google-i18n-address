@@ -4,11 +4,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "google-i18n-address"
-version = "3.1.1"
+dynamic = ["version"]
 readme = "README.md"
 description = "Address validation helpers for Google's i18n address database"
 authors = [{ name = "Mirumee Software", email = "hello@mirumee.com" }]
-license = { file = "LICENSE" }
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -18,12 +19,13 @@ classifiers = [
     "Operating System :: OS Independent",
     "Environment :: Web Environment",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
+requires-python = ">=3.10"
 dependencies = ["requests>=2.7.0"]
 
 [project.urls]
@@ -44,6 +46,9 @@ include = [
     "src/i18naddress/**/*.py",
     "src/i18naddress/**/*.json",
 ]
+
+[tool.hatch.version]
+path = "src/i18naddress/__about__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/i18naddress"]
@@ -69,7 +74,7 @@ dependencies = [
 ]
 
 [[tool.hatch.envs.hatch-test.matrix]]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+python = ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
@@ -93,6 +98,7 @@ exclude_lines = [
     "if TYPE_CHECKING:",
     "@abstract",
 ]
+omit = ["*/__about__.py"]
 fail_under = 90
 
 [tool.hatch.envs.coverage]
@@ -110,11 +116,11 @@ xml = "coverage xml --skip-empty"
 
 [tool.ruff]
 line-length = 88
-target-version = "py38"
+target-version = "py310"
 
 [tool.ruff.format]
 docstring-code-format = true
-docstring-code-line-length = 80
+docstring-code-line-length = 99
 
 [tool.ruff.lint]
 select = ["E", "F", "G", "I", "N", "Q", "UP", "C90", "T20", "TID"]

@@ -244,7 +244,7 @@ def test_address_formatting():
         "street_address": "中关村东路1号",
     }
     result = format_address(address, latin=False)
-    assert result == ("677400\n" "云南省临沧市凤庆县\n" "中关村东路1号\n" "CHINA")
+    assert result == ("677400\n云南省临沧市凤庆县\n中关村东路1号\nCHINA")
 
 
 def test_capitalization():
