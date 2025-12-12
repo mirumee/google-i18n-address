@@ -1,11 +1,9 @@
 # Google i18n address
 
-![codecov.io](https://img.shields.io/codecov/c/github/mirumee/google-i18n-address.svg)
-![GH Actions](https://github.com/mirumee/google-i18n-address/actions/workflows/publish.yml/badge.svg?branch=master)
-![GH Actions](https://github.com/mirumee/google-i18n-address/actions/workflows/code_quality.yml/badge.svg?branch=master)
-![PyPi downloads](https://img.shields.io/pypi/dm/google-i18n-address.svg)
-![PyPi version](https://img.shields.io/pypi/v/google-i18n-address.svg)
-![PyPi pythons](https://img.shields.io/pypi/pyversions/google-i18n-address.svg)
+[![codecov](https://codecov.io/github/mirumee/google-i18n-address/graph/badge.svg?token=LdZIgqvsAG)](https://codecov.io/github/mirumee/google-i18n-address)
+![PyPi downloads](https://img.shields.io/pypi/dm/google-i18n-address)
+![PyPi version](https://img.shields.io/pypi/v/google-i18n-address)
+![PyPi pythons](https://img.shields.io/pypi/pyversions/google-i18n-address)
 
 This package contains a copy of [Google's i18n address](https://chromium-i18n.appspot.com/ssl-address) metadata repository that contains great data but comes with no uptime guarantees.
 
