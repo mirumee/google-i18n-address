@@ -311,3 +311,43 @@ def test_address_latinization():
         "BEIJING SHI, 100084\n"
         "CHINA"
     )
+
+
+@pytest.mark.parametrize(
+    "address, expected",
+    [
+        (
+            {"country_code": None},
+            format_address({}),
+        ),
+        (
+            {
+                "country_code": "US",
+                "country_area": "CA",
+                "city": None,
+                "postal_code": "90210",
+                "street_address": "1 Main",
+            },
+            "1 Main\n, CA 90210\nUNITED STATES",
+        ),
+        (
+            {
+                "country_code": "US",
+                "country_area": "CA",
+                "city": "LA",
+                "postal_code": "90210",
+                "street_address": "1 Main",
+                "name": None,
+            },
+            "1 Main\nLA, CA 90210\nUNITED STATES",
+        ),
+    ],
+)
+def test_format_address_treats_none_fields_as_empty(address, expected):
+    assert format_address(address) == expected
+
+
+def test_normalize_address_none_country_code_is_required():
+    with pytest.raises(InvalidAddressError) as excinfo:
+        normalize_address({"country_code": None, "city": "LA"})
+    assert excinfo.value.errors["country_code"] == "required"

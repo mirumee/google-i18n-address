@@ -186,7 +186,7 @@ def _load_country_data(country_code):
 
 
 def get_validation_rules(address):
-    country_code = address.get("country_code", "").upper()
+    country_code = (address.get("country_code") or "").upper()
     country_data, database = _load_country_data(country_code)
     country_name = country_data.get("name", "")
     address_format = country_data["fmt"]
@@ -388,7 +388,7 @@ def normalize_address(address):
 
 def _format_address_line(line_format, address, rules):
     def _get_field(name):
-        value = address.get(name, "")
+        value = address.get(name) or ""
         if name in rules.upper_fields:
             value = value.upper()
         return value
@@ -440,7 +440,7 @@ def latinize_address(address, normalized=False):
     if not normalized:
         address = normalize_address(address)
     cleaned_data = address.copy()
-    country_code = address.get("country_code", "").upper()
+    country_code = (address.get("country_code") or "").upper()
     dummy_country_data, database = _load_country_data(country_code)
     if country_code:
         country_area = address["country_area"]
