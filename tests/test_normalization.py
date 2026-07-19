@@ -244,7 +244,7 @@ def test_address_formatting():
         "street_address": "中关村东路1号",
     }
     result = format_address(address, latin=False)
-    assert result == ("677400\n" "云南省临沧市凤庆县\n" "中关村东路1号\n" "CHINA")
+    assert result == ("677400\n云南省临沧市凤庆县\n中关村东路1号\nCHINA")
 
 
 def test_capitalization():
@@ -264,6 +264,20 @@ def test_address_latinization():
     address = {}
     address = latinize_address(address, normalized=True)
     assert address == {}
+    assert latinize_address({"country_code": "US"}, normalized=True) == {
+        "country_code": "US"
+    }
+    assert latinize_address(
+        {"country_code": "US", "country_area": "CA"}, normalized=True
+    ) == {"country_code": "US", "country_area": "California"}
+    assert latinize_address(
+        {"country_code": "CN", "country_area": "云南省", "city": "临沧市"},
+        normalized=True,
+    ) == {
+        "country_code": "CN",
+        "country_area": "Yunnan Sheng",
+        "city": "Lincang Shi",
+    }
     address = {
         "country_code": "US",
         "country_area": "CA",

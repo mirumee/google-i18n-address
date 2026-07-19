@@ -443,7 +443,7 @@ def latinize_address(address, normalized=False):
     country_code = address.get("country_code", "").upper()
     dummy_country_data, database = _load_country_data(country_code)
     if country_code:
-        country_area = address["country_area"]
+        country_area = address.get("country_area")
         if country_area:
             key = f"{country_code}/{country_area}"
             country_area_data = database.get(key)
@@ -451,18 +451,21 @@ def latinize_address(address, normalized=False):
                 cleaned_data["country_area"] = country_area_data.get(
                     "lname", country_area_data.get("name", country_area)
                 )
-                city = address["city"]
-                key = f"{country_code}/{country_area}/{city}"
-                city_data = database.get(key)
-                if city_data:
-                    cleaned_data["city"] = city_data.get(
-                        "lname", city_data.get("name", city)
-                    )
-                    city_area = address["city_area"]
-                    key = f"{country_code}/{country_area}/{city}/{city_area}"
-                    city_area_data = database.get(key)
-                    if city_area_data:
-                        cleaned_data["city_area"] = city_area_data.get(
-                            "lname", city_area_data.get("name", city_area)
+                city = address.get("city")
+                if city:
+                    key = f"{country_code}/{country_area}/{city}"
+                    city_data = database.get(key)
+                    if city_data:
+                        cleaned_data["city"] = city_data.get(
+                            "lname", city_data.get("name", city)
                         )
+                        city_area = address.get("city_area")
+                        if city_area:
+                            key = f"{country_code}/{country_area}/{city}/{city_area}"
+                            city_area_data = database.get(key)
+                            if city_area_data:
+                                cleaned_data["city_area"] = city_area_data.get(
+                                    "lname",
+                                    city_area_data.get("name", city_area),
+                                )
     return cleaned_data
