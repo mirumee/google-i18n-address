@@ -150,7 +150,7 @@ Output:
 ```python
 {'country_code': 'US',
  'country_area': 'California',
- 'city': 'Mountain View',
+ 'city': 'MOUNTAIN VIEW',
  'city_area': '',
  'sorting_code': '',
  'postal_code': '94037',
